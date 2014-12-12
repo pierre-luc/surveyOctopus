@@ -14,7 +14,7 @@ class Config {
     static $databases = null;
     private static $parameters;
     private static $routes;
-    private static $appname = 'Survey Octopus';
+    private static $appname = 'SurveyOctopus';
 
     /**
      * Charge les élements de connexion à la base de données qui se trouvent
