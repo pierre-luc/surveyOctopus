@@ -1,0 +1,10 @@
+{
+    "databases": {
+        "default": {
+            "database": "octopus_db",
+            "host": "localhost",
+            "login": "root",
+            "pass": "toor"
+        }
+    }
+}

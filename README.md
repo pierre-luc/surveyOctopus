@@ -1,4 +1,4 @@
-surveyOctopus
-=============
+octopus
+=======
 
-Plateforme de sondage opensource
+Framework php

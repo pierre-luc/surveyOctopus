@@ -1,0 +1,13 @@
+{   /*===-------------------------===*
+     * Fichier de mappage des routes *
+     *===----------------------------*/
+
+    // exemple
+    /*
+    "article/:titre-:id":
+        "articles/view/id:[0-9]+/titre:[a-z]+",
+
+    "post/:titre-:date-:id":
+        "articles/view/id:[0-9]+/date:[0-9]{4}/titre:[a-z]+"
+    //*/
+}
