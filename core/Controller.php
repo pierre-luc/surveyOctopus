@@ -190,6 +190,8 @@ class Controller {
         $this->session = $session;
     }
 
+    public function getSession() { return $this->session; }
+
     /**
      * Permet de changer la layout par défaut depuis une classe dérivée.
      * @param $layout

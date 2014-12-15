@@ -312,7 +312,8 @@ class DataBaseManager {
             $pre = $this->db->prepare( $sql );
             $pre->execute( $d );
         } catch (\PDOException $e) {
-            Debug::debug($e);
+            //Debug::debug($e);
+            throw $e;
         }
 
         // mémorisation de l'id du dernier élément inséré.

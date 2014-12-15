@@ -33,17 +33,18 @@ class Session {
     /**
      * Permet de récupérer un message dans la session et de retourner ce message
      * formatté en fonction de son type au format HTML.
-     * Si aucun message n'est trouvé, null est retourné.
+     * Si aucun message n'est trouvé, la chaîne vide est retournée.
      * @return string
      */
     public function bag() {
-        if ( !isset( $_SESSION['bag']['message'] ) ) {
-            return null;
+        if ( !isset($_SESSION[ 'bag' ])
+            || !isset( $_SESSION['bag']['message'] ) ) {
+            return '';
         }
         $bag = $_SESSION['bag'];
         $html =
-            MessageFormatter::runCallback( $bag['type'], $bag['message'] );
-
+            MessageFormatter::runCallback( $bag['type'],
+                array("message"=>$bag['message'] ));
         /* on supprime le  message puisqu'au prochain affiche de la page
          * sur laquelle le message doit être écrit ne devra plus être
          * présent.
