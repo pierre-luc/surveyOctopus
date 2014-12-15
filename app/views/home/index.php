@@ -22,7 +22,7 @@ use octopus\core\Router;
             </nav><!-- /navbar -->
         </div>
     </div>
-
+    <?= $this->getSession()->bag()?>
     <div class="row">
         <div class="col-md-2 col-md-offset-2 col-sm-2 col-sm-offset-2 col-xs-2 col-xs-offset-2">
             <img src="<?= Router::generate( 'img/octopus.png' );?>" width="100%" alt=""/>

@@ -80,6 +80,18 @@ class UserController extends Controller {
     public function disconnect() {
         $session = $this->getSession();
         $session->delete();
+        $session->setBag(
+            'Vous êtes bien déconnecté', 'home_disconnect'
+        );
         $this->redirect( '' );
+    }
+
+    public function dashboard() {
+        $session = $this->getSession();
+        $user = $session->get( 'user' );
+        if ( $user == null ) {
+            $this->redirect( '' );
+        }
+
     }
 }

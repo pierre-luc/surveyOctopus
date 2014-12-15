@@ -4,6 +4,6 @@ use octopus\core\Controller;
 
 class HomeController extends Controller {
     public function index() {
-
+        $this->loadMessageFormatter( 'home' );
     }
 }

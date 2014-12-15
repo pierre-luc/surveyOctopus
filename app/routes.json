@@ -15,5 +15,8 @@
         "user/connect",
 
     "deconnexion":
-        "user/disconnect"
+        "user/disconnect",
+
+    "dashboard":
+        "user/dashboard"
 }
