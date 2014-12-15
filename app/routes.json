@@ -1,13 +1,10 @@
-{   /*===-------------------------===*
-     * Fichier de mappage des routes *
-     *===----------------------------*/
+{
+    "/":
+        "home/index",
 
-    // exemple
-    /*
-    "article/:titre-:id":
-        "articles/view/id:[0-9]+/titre:[a-z]+",
+    "inscription":
+        "user/signup",
 
-    "post/:titre-:date-:id":
-        "articles/view/id:[0-9]+/date:[0-9]{4}/titre:[a-z]+"
-    //*/
+    "inscription/*":
+        "user/*"
 }

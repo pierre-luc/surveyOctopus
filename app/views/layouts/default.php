@@ -15,6 +15,9 @@ use octopus\core\Router;
     <!-- Loading Flat UI -->
     <link href="<?php echo Router::root( 'css/flat-ui.min.css' );?>" rel="stylesheet">
 
+    <!-- Loading default skin -->
+    <link href="<?php echo Router::root( 'css/default.css' );?>" rel="stylesheet">
+
     <link rel="shortcut icon" href="<?php echo Router::root( 'img/favicon.ico' );?>">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
@@ -22,6 +25,7 @@ use octopus\core\Router;
     <script src="<?php echo Router::root( 'js/vendor/html5shiv.js' );?>"></script>
     <script src="<?php echo Router::root( 'js/vendor/respond.min.js' );?>"></script>
     <![endif]-->
+
 </head>
 <body>
 

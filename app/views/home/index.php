@@ -15,8 +15,8 @@ use octopus\core\Router;
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-collapse-01">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Se connecter</a></li>
-                        <li><a href="#">Inscription</a></li>
+                        <li><a href="<?= Router::generate( 'connexion' );?>">Se connecter</a></li>
+                        <li><a href="<?= Router::generate( 'inscription' );?>">Inscription</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </nav><!-- /navbar -->

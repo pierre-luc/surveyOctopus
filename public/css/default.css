@@ -1,0 +1,17 @@
+body {
+    background: #1abc9c;
+}
+
+.login {
+    background: none;
+    padding: 0 38px 0 38px;
+    margin-bottom: 0;
+}
+
+.login .login-screen {
+    padding-top: 0;
+}
+
+.login .login-icon {
+    top: 0;
+}
