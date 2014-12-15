@@ -147,11 +147,10 @@ class DataBaseManager {
                 $conditions = array();
                 foreach ( $request['conditions'] as $key => $value) {
                     if ( !is_numeric( $value ) && !is_array( $value ) ) {
-                        $value = '"' . mysql_real_escape_string( $value ) . '"';
+                        $value = "'" . $value . "'";
                     }
                     $op = '=';
                     $val = $value;
-
                     if ( is_array( $value ) ) {
                         $op = $value[ 0 ];
                         $val = $value[ 1 ];
