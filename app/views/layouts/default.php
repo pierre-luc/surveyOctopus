@@ -6,7 +6,7 @@ use octopus\core\Router;
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>octopus framework</title>
+    <title>survey octopus</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Loading Bootstrap -->
@@ -24,9 +24,9 @@ use octopus\core\Router;
     <![endif]-->
 </head>
 <body>
-    <div class="container">
-        <?= $content_for_layout ?>
-    </div>
+
+    <?= $content_for_layout ?>
+
     <!-- /.container -->
 
     <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
