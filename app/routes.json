@@ -5,6 +5,15 @@
     "inscription":
         "user/signup",
 
-    "inscription/*":
-        "user/*"
+    "inscription/createUser":
+        "user/createUser",
+
+    "connexion":
+        "user/signin",
+
+    "connexion/identification":
+        "user/connect",
+
+    "deconnexion":
+        "user/disconnect"
 }

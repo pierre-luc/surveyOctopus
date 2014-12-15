@@ -14,6 +14,14 @@ class UserController extends Controller {
         $this->sendVariables( 'login', $login );
     }
 
+    public function signin() {
+        $this->loadMessageFormatter( 'signup' );
+        $session = $this->getSession();
+        $login = $session->get( 'signup_login' );
+        $session->delete( 'signup_login' );
+        $this->sendVariables( 'login', $login );
+    }
+
     public function createUser() {
         $data = $this->getData();
 
@@ -48,5 +56,30 @@ class UserController extends Controller {
             $session->put( 'signup_login', $data->login );
         }
         $this->redirect( 'inscription' );
+    }
+
+    public function connect() {
+        $data = $this->getData();
+        $session = $this->getSession();
+        $this->loadModel( 'user' );
+        $userModel = $this->getModel( 'user' );
+
+        $user = $userModel->getUser( $data->login, $data->pass );
+        if ( $user == null ) {
+            $session->setBag(
+                'Votre login ou mot de passe est incorrect',
+                'signup_err'
+            );
+            $this->redirect( 'connexion' );
+        } else {
+            $session->put( 'user', $user );
+            $this->redirect( 'dashboard' );
+        }
+    }
+
+    public function disconnect() {
+        $session = $this->getSession();
+        $session->delete();
+        $this->redirect( '' );
     }
 }

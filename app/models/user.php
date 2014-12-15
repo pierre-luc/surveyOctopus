@@ -7,7 +7,7 @@ use octopus\core\Model;
 
 class User extends Model {
     public function add( $login, $pass ) {
-        $salt = Config::getAppName() . '_' . uniqid();
+        $salt = sha1( Config::getAppName() );
         $data = array(
             'login' => htmlspecialchars( $login ),
             'pass'  => sha1( $salt . '_' . sha1( htmlspecialchars( $pass ) ) )
@@ -20,5 +20,22 @@ class User extends Model {
                 return 'duplicate';
             }
         }
+    }
+
+    public function getUser( $login, $pass ) {
+        $salt = sha1( Config::getAppName() );
+        $data = array(
+            'login' => htmlspecialchars( $login ),
+            'pass'  => sha1( $salt . '_' . sha1( htmlspecialchars( $pass ) ) )
+        );
+
+        $user = $this->searchOne( array(
+            'conditions' => array(
+                'login' => $data[ 'login' ],
+                'pass'  => $data[ 'pass' ]
+            )
+        ) );
+
+        return $user;
     }
 }
