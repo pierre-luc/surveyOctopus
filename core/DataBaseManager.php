@@ -165,6 +165,10 @@ class DataBaseManager {
         if ( isset( $request['order'] ) ) {
             if ( !is_array( $request['order'])) {
                 $sql .= " order by `{$this->primaryKey}` {$request['order']}";
+            } else {
+                $by = $request[ 'order' ][ 'by' ];
+                $dir = $request[ 'order' ][ 'dir' ];
+                $sql .= " order by `$by` $dir";
             }
         }
 

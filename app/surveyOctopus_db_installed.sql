@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Mar 16 Décembre 2014 à 02:09
+-- Généré le: Mar 16 Décembre 2014 à 15:17
 -- Version du serveur: 5.5.40-0ubuntu0.14.04.1
 -- Version de PHP: 5.5.9-1ubuntu4.5
 
@@ -27,11 +27,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `answers` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` text NOT NULL,
   `user` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `answers` (
 --
 
 CREATE TABLE IF NOT EXISTS `questions` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` text NOT NULL,
   `type` varchar(10) NOT NULL,
   `criteres` int(11) NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `questions` (
   PRIMARY KEY (`id`),
   KEY `FKanswer` (`answer`),
   KEY `FKsondage` (`sondage`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -59,13 +59,21 @@ CREATE TABLE IF NOT EXISTS `questions` (
 --
 
 CREATE TABLE IF NOT EXISTS `sondages` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
   `opened` int(11) NOT NULL,
+  `date` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FKuser` (`user`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Contenu de la table `sondages`
+--
+
+INSERT INTO `sondages` (`id`, `user`, `title`, `opened`, `date`) VALUES
+(1, 9, 'mon premier sondage', 0, 1418737506);
 
 -- --------------------------------------------------------
 

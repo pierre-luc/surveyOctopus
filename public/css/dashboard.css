@@ -31,3 +31,14 @@ body {
     margin-bottom: 10px;
 }
 
+.table .action button {
+    display: none;
+}
+
+    .table .table-row:hover {
+        background: #27AE60;
+    }
+
+    .table .table-row:hover .action button {
+        display: inline-block;
+    }
