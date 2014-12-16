@@ -41,6 +41,7 @@ class SurveyController extends Controller {
     }
 
     public function manage( $id, $slug ) {
+        $this->redirectIfNotConnected();
         $this->setLayout( 'dashboard' );
     }
 }

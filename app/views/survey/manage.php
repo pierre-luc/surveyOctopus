@@ -7,7 +7,7 @@ use octopus\core\Controller;
 <div class="row">
     <div class="login">
         <div class="login-screen">
-            <div class="login-icon">
+            <div class="login-icon" style="position: fixed; top: 70px;">
                 <img src="<?= Router::generate( 'img/icons/svg/mail.svg' );?>" alt="Welcome to Mail App">
                 <h4><?= $appname?><small>&Eacute;dition d'un sondage</small></h4>
                 <input type="submit" class="btn btn-warning btn-lg btn-block" value="Sauver">

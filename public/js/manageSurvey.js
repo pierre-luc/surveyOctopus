@@ -1,3 +1,14 @@
+var manageSurvey = {
+    question: {
+        list: [],
+        choice: function() {
+
+        }
+    }
+};
+
+
+
 $( document ).ready( function(){
     $( '#btnChoiceQuestion').click( function() {
         var html = '<div class="row question"><div class="login-form">'
