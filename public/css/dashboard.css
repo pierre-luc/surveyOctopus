@@ -31,14 +31,29 @@ body {
     margin-bottom: 10px;
 }
 
-.table .action button {
-    display: none;
+.table {
+    color: #fff;
 }
 
-    .table .table-row:hover {
-        background: #27AE60;
+    .table .action button {
+        display: none;
     }
 
-    .table .table-row:hover .action button {
-        display: inline-block;
-    }
+        .table .table-row:nth-child(odd){
+            background: #27AE60;
+        }
+
+        .table .table-row:nth-child(even){
+            background: #2ECC71;
+        }
+
+        .table .table-row:hover {
+            background: #16A085;
+            cursor: default;
+        }
+
+        .table .table-row:hover .action button {
+            display: inline-block;
+            margin-top: 0;
+            margin-bottom: 0;
+        }

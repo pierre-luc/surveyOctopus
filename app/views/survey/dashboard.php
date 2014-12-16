@@ -11,21 +11,24 @@ use octopus\core\Router;
 </div>
 <?php else: ?>
     <div class="row table">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
-                <div class="col-md-5 col-md-offset-2">Titre</div>
-                <div class="col-md-3">Action</div>
-                <div class="col-md-2">Date de création</div>
+                <div class="col-md-3">Titre</div>
+                <div class="col-md-1 col-md-offset-5">Activé</div>
+                <div class="col-md-3">Date de création</div>
             </div>
             <?php foreach( $sondages as $s ):?>
                 <div class="row table-row">
-                    <div class="col-md-5 col-md-offset-2"><?= $s->title?></div>
-                    <div class="col-md-3 action">
+                    <div class="col-md-3"><?= $s->title?></div>
+                    <div class="col-md-3 action col-md-offset-2">
                         <button class="btn btn-default navbar-btn btn-xs btn-inverse" type="button">Stats</button>
                         <button class="btn btn-default navbar-btn btn-xs btn-warning" type="button">Modifier</button>
                         <button class="btn btn-default navbar-btn btn-xs btn-danger" type="button">Supprimer</button>
                     </div>
-                    <div class="col-md-2"><?= date( "d M Y H:i:s", $s->date) ?></div>
+                    <div class="col-md-1">
+                        <input type="checkbox" <?= $s->opened ? 'checked' : '' ?> data-toggle="switch" name="info-square-switch" data-on-color="warning" id="switch-05" />
+                    </div>
+                    <div class="col-md-3"><?= date( "d M Y H:i:s", $s->date) ?></div>
                 </div>
             <?php endforeach;?>
         </div>
