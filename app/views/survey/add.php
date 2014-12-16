@@ -43,7 +43,7 @@ use octopus\core\Controller;
                             <div class="row">
 
                                 <div class="tagsinput-primary">
-                                    <input name="tagsinput" class="tagsinput" data-role="tagsinput" value="School, Teacher, Colleague" style="display: none;">
+                                    <input name="tagsinput" class="tagsinput" data-role="tagsinput" value="School, Teacher, Colleague" style="display: none;" placeholder="Réponse possible">
                                 </div>
 
                             </div>

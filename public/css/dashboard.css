@@ -31,6 +31,3 @@ body {
     margin-bottom: 10px;
 }
 
-.bootstrap-tagsinput input[type=text] {
-    min-width: auto !important;
-}
