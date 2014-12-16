@@ -26,6 +26,9 @@ use octopus\core\Router;
     <script src="<?php echo Router::root( 'js/vendor/respond.min.js' );?>"></script>
     <![endif]-->
 
+    <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
+    <script src="<?php echo Router::root( 'js/vendor/jquery.min.js' );?>"></script>
+
 </head>
 <body>
 
@@ -53,8 +56,6 @@ use octopus\core\Router;
 
     <!-- /.container -->
 
-    <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
-    <script src="<?php echo Router::root( 'js/vendor/jquery.min.js' );?>"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="<?php echo Router::root( 'js/vendor/video.js' );?>"></script>
     <script src="<?php echo Router::root( 'js/flat-ui.min.js' );?>"></script>

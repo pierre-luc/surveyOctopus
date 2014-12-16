@@ -21,5 +21,8 @@
         "survey/dashboard",
 
     "dashboard/createSurvey":
-        "survey/add"
+        "survey/add",
+
+    "dashboard/:slug-:id":
+        "survey/manage/id:[0-9]+/slug:[a-zA-Z \\-]+"
 }

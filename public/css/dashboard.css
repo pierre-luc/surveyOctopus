@@ -27,15 +27,16 @@ body {
     top: 0;
 }
 
-.login-form {
+.login-form.alone {
     margin-bottom: 10px;
+    padding: 24px 23px 2px;
 }
 
 .table {
     color: #fff;
 }
 
-    .table .action button {
+    .table .action * {
         display: none;
     }
 
@@ -52,8 +53,17 @@ body {
             cursor: default;
         }
 
-        .table .table-row:hover .action button {
+        .table .table-row:hover .action * {
             display: inline-block;
             margin-top: 0;
             margin-bottom: 0;
         }
+
+.manage .question {
+    margin-bottom: 10px;
+}
+
+.manage p {
+    margin: 1px 0 1px;
+    color:#2C3E50;
+}

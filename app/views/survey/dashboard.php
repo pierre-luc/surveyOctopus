@@ -22,7 +22,7 @@ use octopus\core\Router;
                     <div class="col-md-3"><?= $s->title?></div>
                     <div class="col-md-3 action col-md-offset-2">
                         <button class="btn btn-default navbar-btn btn-xs btn-inverse" type="button">Stats</button>
-                        <button class="btn btn-default navbar-btn btn-xs btn-warning" type="button">Modifier</button>
+                        <a href="<?= Router::generate( "survey/manage/{$s->id}/{$s->slug}" )?>" class="btn btn-default navbar-btn btn-xs btn-warning">Modifier</a>
                         <button class="btn btn-default navbar-btn btn-xs btn-danger" type="button">Supprimer</button>
                     </div>
                     <div class="col-md-1">

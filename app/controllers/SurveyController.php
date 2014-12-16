@@ -39,4 +39,8 @@ class SurveyController extends Controller {
 
         $this->redirect( 'dashboard' );
     }
+
+    public function manage( $id, $slug ) {
+        $this->setLayout( 'dashboard' );
+    }
 }
