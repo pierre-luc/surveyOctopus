@@ -8,7 +8,7 @@ use octopus\core\Controller;
 class UserController extends Controller {
     public function signup() {
         $this->loadMessageFormatter( 'signup' );
-        $session = $this->getSession();
+        $session = self::getSession();
         $login = $session->get( 'signup_login' );
         $session->delete( 'signup_login' );
         $this->sendVariables( 'login', $login );
@@ -16,7 +16,7 @@ class UserController extends Controller {
 
     public function signin() {
         $this->loadMessageFormatter( 'signup' );
-        $session = $this->getSession();
+        $session = self::getSession();
         $login = $session->get( 'signup_login' );
         $session->delete( 'signup_login' );
         $this->sendVariables( 'login', $login );
@@ -25,7 +25,7 @@ class UserController extends Controller {
     public function createUser() {
         $data = $this->getData();
 
-        $session = $this->getSession();
+        $session = self::getSession();
 
         if ( $data->pass != $data->pass2 ) {
             $session->setBag(
@@ -60,7 +60,7 @@ class UserController extends Controller {
 
     public function connect() {
         $data = $this->getData();
-        $session = $this->getSession();
+        $session = self::getSession();
         $this->loadModel( 'user' );
         $userModel = $this->getModel( 'user' );
 
@@ -78,20 +78,11 @@ class UserController extends Controller {
     }
 
     public function disconnect() {
-        $session = $this->getSession();
+        $session = self::getSession();
         $session->delete();
         $session->setBag(
             'Vous êtes bien déconnecté', 'home_disconnect'
         );
         $this->redirect( '' );
-    }
-
-    public function dashboard() {
-        $session = $this->getSession();
-        $user = $session->get( 'user' );
-        if ( $user == null ) {
-            $this->redirect( '' );
-        }
-
     }
 }

@@ -1,0 +1,36 @@
+body {
+    background: #1abc9c;
+}
+
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+.empty-survey {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.login {
+    background: none;
+    padding: 0 38px 0 38px;
+    margin-bottom: 0;
+}
+
+.login .login-screen {
+    padding-top: 0;
+}
+
+.login .login-icon {
+    top: 0;
+}
+
+.login-form {
+    margin-bottom: 10px;
+}
+
+.bootstrap-tagsinput input[type=text] {
+    min-width: auto !important;
+}

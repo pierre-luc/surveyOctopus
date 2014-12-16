@@ -3,6 +3,7 @@ namespace octopus\app\models;
 
 use octopus\app\Debug;
 use octopus\core\Config;
+use octopus\core\Controller;
 use octopus\core\Model;
 
 class User extends Model {
@@ -37,5 +38,9 @@ class User extends Model {
         ) );
 
         return $user;
+    }
+
+    public static function isConnected() {
+        return Controller::getSession()->get( 'user' ) != null;
     }
 }

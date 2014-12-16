@@ -1,5 +1,6 @@
 <?php
 namespace octopus\app\views\user;
+use octopus\core\Controller;
 use octopus\core\Router;
 ?>
 <div class="container">
@@ -28,7 +29,7 @@ use octopus\core\Router;
             <p>
                 Pour vous connecter, remplissez les champs suivant.
             </p>
-            <?= $this->getSession()->bag() ?>
+            <?= Controller::getSession()->bag() ?>
             <div class="login-form">
                 <form action="<?= Router::generate( 'connexion/identification' );?>" method="post">
 

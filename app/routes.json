@@ -18,5 +18,8 @@
         "user/disconnect",
 
     "dashboard":
-        "user/dashboard"
+        "survey/dashboard",
+
+    "dashboard/createSurvey":
+        "survey/add"
 }

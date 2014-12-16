@@ -19,10 +19,10 @@ class Controller {
     private $layout = 'default';
     private $rendered = false;
     private $models = array();
-    private $session;
+    private static  $session;
 
     function __construct( Request $request = null ) {
-        $this->session = new Session();
+        self::$session = new Session();
         if ( $request ) {
             $this->request = $request;
         }
@@ -186,11 +186,11 @@ class Controller {
      * Enregistre une session dans controleur.
      * @param Session $session
      */
-    public function setSession( Session $session ) {
-        $this->session = $session;
+    public static function setSession( Session $session ) {
+        self::$session = $session;
     }
 
-    public function getSession() { return $this->session; }
+    public static function getSession() { return self::$session; }
 
     /**
      * Permet de changer la layout par défaut depuis une classe dérivée.
