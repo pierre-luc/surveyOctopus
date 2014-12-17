@@ -61,9 +61,30 @@ body {
 
 .manage .question {
     margin-bottom: 10px;
+    border-top: solid 3px #95A5A6;
+    cursor: move;
 }
+
+    .manage .question .login-form {
+        cursor: default;
+    }
 
 .manage p {
     margin: 1px 0 1px;
     color:#2C3E50;
+}
+
+.manage .question.dragdrop {
+    border-radius: 6px;
+}
+
+.dragdrop.ui-state-hover {
+    border: dashed 2px #2980B9;
+}
+.dragdrop.ui-state-active {
+    border: dashed 2px #D35400;
+}
+
+#manage_preloader {
+    visibility: hidden;
 }

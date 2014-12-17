@@ -10,7 +10,8 @@ use octopus\core\Controller;
             <div class="login-icon" style="position: fixed; top: 70px;">
                 <img src="<?= Router::generate( 'img/icons/svg/mail.svg' );?>" alt="Welcome to Mail App">
                 <h4><?= $appname?><small>&Eacute;dition d'un sondage</small></h4>
-                <input type="submit" class="btn btn-warning btn-lg btn-block" value="Sauver">
+                <img id="manage_preloader" src="<?= Router::generate('img/preloader/barloader.gif') ?>" alt=""/>
+                <button id="btnSave" class="btn btn-warning btn-lg btn-block disabled">Sauver</button>
             </div>
 
             <p class="lead">&Eacute;dition d'un sondage</p>

@@ -28,6 +28,7 @@ use octopus\core\Router;
 
     <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
     <script src="<?php echo Router::root( 'js/vendor/jquery.min.js' );?>"></script>
+    <script src="<?php echo Router::root( 'js/vendor/jquery-ui.min.js' );?>"></script>
 
 </head>
 <body>
