@@ -24,5 +24,11 @@
         "survey/add",
 
     "dashboard/:slug-:id":
-        "survey/manage/id:[0-9]+/slug:[a-zA-Z \\-]+"
+        "survey/manage/id:[0-9]+/slug:[a-zA-Z \\-]+",
+
+    "dashboard/ajax/save/:slug-:id":
+        "survey/save/id:[0-9]+/slug:[a-zA-Z \\-]+",
+
+    "dashboard/ajax/questions/:slug-:id":
+        "survey/getQuestions/id:[0-9]+/slug:[a-zA-Z \\-]+"
 }

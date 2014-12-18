@@ -180,6 +180,7 @@ class Controller {
         }
 
         header( "Location: " . Router::generate( $url ) );
+        die();
     }
 
     /**

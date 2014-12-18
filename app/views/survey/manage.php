@@ -20,7 +20,7 @@ use octopus\core\Controller;
             <form action="<?= Router::generate( 'survey/create' );?>" method="post">
                 <div class="login-form alone">
                     <div class="form-group">
-                        <input name="title" type="text" class="form-control login-field" value="" placeholder="Titre" id="title">
+                        <input name="title" type="text" class="form-control login-field" value="<?= $sondage->title ?>" placeholder="Titre" id="title">
                         <label class="login-field-icon fui-tag" for="title"></label>
                     </div>
 
@@ -50,3 +50,7 @@ use octopus\core\Controller;
 
 </div>
 <script src="<?= Router::root( 'js/manageSurvey.js' )?>"></script>
+<script>
+    manageSurvey.saveUrl = "<?= Router::generate( "survey/save/{$sondage->id}/{$sondage->slug}" )?>";
+    manageSurvey.getQuestionsUrl = "<?= Router::generate( "survey/getQuestions/{$sondage->id}/{$sondage->slug}" )?>";
+</script>
