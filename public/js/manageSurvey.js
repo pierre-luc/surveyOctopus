@@ -69,17 +69,20 @@ var manageSurvey = {
         $.post( manageSurvey.getQuestionsUrl, {}, function( res ) {
             manageSurvey.enable();
             $('#manage_preloader').css('visibility', 'hidden');
-            console.log( res );
             if ( res.status == 'success' ) {
                 if ( res.questions ) {
                     for (var i in res.questions ) {
-                        if ( res.questions[ i ].type == 'choice' ) {
-                            var q = new manageSurvey.question.questionChoice();
-                            q.setToken( res.questions[ i ].token );
-                            q.setOrder( res.questions[ i ].orderNum );
-                            q.setText( res.questions[ i ].text );
-                            q.setAnswers( res.questions[ i ].criteres );
-                            q.render();
+                        switch ( res.questions[ i ].type ) {
+                            case 'choice':
+                                var q = new manageSurvey.question.questionChoice();
+                                q.setToken( res.questions[ i ].token );
+                                q.setOrder( res.questions[ i ].orderNum );
+                                q.setText( res.questions[ i ].text );
+                                q.setAnswers( res.questions[ i ].criteres );
+                                q.render();
+                            break;
+                            default:
+                                // rien à faire
                         }
                     }
                 }
@@ -122,7 +125,6 @@ var manageSurvey = {
         $.post( manageSurvey.saveUrl, {title:manageSurvey.title, data:data}, function( res ) {
             manageSurvey.enable();
             $('#manage_preloader').css('visibility', 'hidden');
-            console.log( res );
             if ( res.status == 'success' ) {
                 for(var i in res.tokens) {
                     manageSurvey.question.list[ res.tokens[ i].order ].setToken(
