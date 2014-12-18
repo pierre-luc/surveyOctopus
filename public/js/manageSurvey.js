@@ -117,8 +117,6 @@ var manageSurvey = {
                 'isDeleted': manageSurvey.question.list[i].isDeleted()
             };
         }
-
-        console.log(data);
         $(manageSurvey).trigger( 'cantSaved' );
 
 
@@ -278,10 +276,10 @@ manageSurvey.question.questionChoice.prototype.render = function() {
         +   '<div class="row">'
         +       '<div class="container-fluid">'
         +           '<div class="row">'
-        +               '<div class="col-md-11>'
+        +               '<div class="col-md-11">'
         +                   '<p><b>' + num + ':</b> Question à choix</p>'
         +               '</div>'
-        +               '<div class="col-md-1>'
+        +               '<div class="col-md-1">'
         +                   '<a href="#" class="remove-btn login-field-icon fui-cross"></a>'
         +               '</div>'
         +           '</div>'

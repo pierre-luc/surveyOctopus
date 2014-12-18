@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Mer 17 Décembre 2014 à 17:59
+-- Généré le: Jeu 18 Décembre 2014 à 09:52
 -- Version du serveur: 5.5.40-0ubuntu0.14.04.1
 -- Version de PHP: 5.5.9-1ubuntu4.5
 
@@ -43,15 +43,17 @@ CREATE TABLE IF NOT EXISTS `questions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` text NOT NULL,
   `type` varchar(10) NOT NULL,
-  `criteres` int(11) NOT NULL,
+  `criteres` text,
   `orderNum` int(11) NOT NULL,
-  `answer` int(11) NOT NULL,
   `sondage` int(11) NOT NULL,
   `token` text NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FKanswer` (`answer`),
   KEY `FKsondage` (`sondage`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+
+--
+-- Contenu de la table `questions`
+--
 
 -- --------------------------------------------------------
 
@@ -68,14 +70,12 @@ CREATE TABLE IF NOT EXISTS `sondages` (
   `slug` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FKuser` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Contenu de la table `sondages`
 --
 
-INSERT INTO `sondages` (`id`, `user`, `title`, `opened`, `date`, `slug`) VALUES
-(1, 9, 'mon premier sondage', 0, 1418737506, 'mon-premier-sondage');
 
 -- --------------------------------------------------------
 
@@ -91,14 +91,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   `token` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_login` (`login`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Contenu de la table `users`
 --
-
-INSERT INTO `users` (`id`, `login`, `pass`, `role`, `token`) VALUES
-(9, 'octopus', '2c845d8c080ecaa57ee12ef427191eae55cd639d', '', '');
 
 --
 -- Contraintes pour les tables exportées
@@ -114,7 +111,6 @@ ALTER TABLE `answers`
 -- Contraintes pour la table `questions`
 --
 ALTER TABLE `questions`
-  ADD CONSTRAINT `FKanswer` FOREIGN KEY (`answer`) REFERENCES `answers` (`id`),
   ADD CONSTRAINT `FKsondage` FOREIGN KEY (`sondage`) REFERENCES `sondages` (`id`);
 
 --

@@ -203,7 +203,7 @@ class SurveyController extends Controller {
                         die();
                     }
 
-                    if ( $question[ 'isDeleted' ] ) {
+                    if ( $question[ 'isDeleted' ] == 'true' ) {
                         $questionModel->delete( 'id', $q->id );
                     } else {
 
