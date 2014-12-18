@@ -15,6 +15,7 @@ jQuery.fn.swap = function(b){
 
 
 var manageSurvey = {
+    title: null,
     question: {
         list: [],
         lastIndex: 0
@@ -27,7 +28,9 @@ var manageSurvey = {
         $(manageSurvey).on('cantSaved', function(){
             $('#btnSave').addClass('disabled');
         });
+
         $('#title').keyup(function(){
+            manageSurvey.title = $( '#title' ).val();
             $(manageSurvey).trigger( 'changed' );
         });
 
@@ -60,6 +63,9 @@ var manageSurvey = {
 
     load: function() {
         $('#manage_preloader').css('visibility', 'visible');
+
+        manageSurvey.title = $( '#title' ).val();
+
         $.post( manageSurvey.getQuestionsUrl, {}, function( res ) {
             manageSurvey.enable();
             $('#manage_preloader').css('visibility', 'hidden');
@@ -104,7 +110,8 @@ var manageSurvey = {
                 'text': manageSurvey.question.list[i].getText(),
                 'criteres': manageSurvey.question.list[i].getAnswers(),
                 'type': manageSurvey.question.list[i].getType(),
-                'token': manageSurvey.question.list[i].getToken()
+                'token': manageSurvey.question.list[i].getToken(),
+                'isDeleted': manageSurvey.question.list[i].isDeleted()
             };
         }
 
@@ -112,7 +119,7 @@ var manageSurvey = {
         $(manageSurvey).trigger( 'cantSaved' );
 
 
-        $.post( manageSurvey.saveUrl, {data:data}, function( res ) {
+        $.post( manageSurvey.saveUrl, {title:manageSurvey.title, data:data}, function( res ) {
             manageSurvey.enable();
             $('#manage_preloader').css('visibility', 'hidden');
             console.log( res );
@@ -153,6 +160,17 @@ manageSurvey.question.questionChoice = function( token ) {
     this.order = this.index;
     this.type = 'choice';
     this.token = token ? token : null;
+    this.deleted = false;
+};
+
+manageSurvey.question.questionChoice.prototype.isDeleted = function() {
+    return this.deleted;
+};
+
+manageSurvey.question.questionChoice.prototype.delete = function() {
+  this.deleted = true;
+  $( '#question_' + this.index ).off( 'changeOrder' );
+  $( '#question_' + this.index ).remove();
 };
 
 manageSurvey.question.questionChoice.prototype.getId = function() {
@@ -256,10 +274,21 @@ manageSurvey.question.questionChoice.prototype.render = function() {
     var html = '<div id="question_' + num + '" class="row question dragdrop" data-order="' + this.order + '"><div class="login-form">'
         + '<div class="container-fluid">'
         +   '<div class="row">'
-        +       '<p><b>' + num + ':</b> Question à choix</p>'
-        +       '<input maxlength="80" name="question_' + num + '" type="text" class="form-control login-field" value="' + text + '" placeholder="Texte de la question" id="questionText_' + num + '">'
-        +       '<p>Réponses:</p>'
-        +       '<input name="tagsinput" class="tagsinput" data-role="tagsinput" value="' + answers + '" placeholder="Réponse" />'
+        +       '<div class="container-fluid">'
+        +           '<div class="row">'
+        +               '<div class="col-md-11>'
+        +                   '<p><b>' + num + ':</b> Question à choix</p>'
+        +               '</div>'
+        +               '<div class="col-md-1>'
+        +                   '<a href="#" class="remove-btn login-field-icon fui-cross"></a>'
+        +               '</div>'
+        +           '</div>'
+        +           '<div class="row">'
+        +               '<input maxlength="80" name="question_' + num + '" type="text" class="form-control login-field" value="' + text + '" placeholder="Texte de la question" id="questionText_' + num + '">'
+        +               '<p>Réponses:</p>'
+        +               '<input name="tagsinput" class="tagsinput" data-role="tagsinput" value="' + answers + '" placeholder="Réponse" />'
+        +           '</div>'
+        +       '</div>'
         +   '</div>'
         + '</div>'
         + '</div></div>';
@@ -274,6 +303,12 @@ manageSurvey.question.questionChoice.prototype.render = function() {
     $('.bootstrap-tagsinput input[type=text]').attr( 'maxlength', 20 );
     */
     var self = this;
+
+    $( '#question_' + num + ' .remove-btn').click(function(){
+        manageSurvey.question.list[ num ].delete();
+        $(manageSurvey).trigger( 'changed' );
+    });
+
     $( '#questionText_' + num).keyup(function(){
         self.questionText = $( '#questionText_' + num).val();
         $(manageSurvey).trigger( 'changed' );

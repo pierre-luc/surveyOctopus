@@ -142,6 +142,7 @@ class SurveyController extends Controller {
         }
 
         $data = $this->getData()->data;
+        $title = htmlspecialchars( $this->getData()->title );
 
         $this->loadModel( 'sondage' );
         $sondageModel = $this->getModel( 'sondage' );
@@ -162,6 +163,10 @@ class SurveyController extends Controller {
             die();
         }
 
+        $sondageModel->update( array(
+            'id'    => $sondage->id,
+            'title' => $title
+        ) );
 
         $this->loadModel( 'question' );
         $questionModel = $this->getModel( 'question' );
@@ -197,16 +202,22 @@ class SurveyController extends Controller {
                         echo JSONConvertor::JSONToText( $json );
                         die();
                     }
-                    $criteres = array();
-                    foreach( $question[ 'criteres' ] as $c ) {
-                        $criteres[] = htmlspecialchars( $c );
+
+                    if ( $question[ 'isDeleted' ] ) {
+                        $questionModel->delete( 'id', $q->id );
+                    } else {
+
+                        $criteres = array();
+                        foreach( $question[ 'criteres' ] as $c ) {
+                            $criteres[] = htmlspecialchars( $c );
+                        }
+                        $questionModel->update(array(
+                            'id' => $q->id,
+                            'text' => htmlspecialchars( $question[ 'text' ] ),
+                            'criteres' => implode( ';', $criteres ),
+                            'orderNum' => htmlspecialchars( $question[ 'order' ] )
+                        ));
                     }
-                    $questionModel->update(array(
-                        'id' => $q->id,
-                        'text' => htmlspecialchars( $question[ 'text' ] ),
-                        'criteres' => implode( ';', $criteres ),
-                        'orderNum' => htmlspecialchars( $question[ 'order' ] )
-                    ));
                     //*/
                 } else {
                     /*
