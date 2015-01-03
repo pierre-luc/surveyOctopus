@@ -130,6 +130,50 @@ class SurveyController extends Controller {
         die();
     }
 
+    public function activate( $id ) {
+        header('Content-type: application/json');
+        $json = array();
+        $json[ 'status' ] = 'failure';
+        $json[ 'connected' ] = true;
+        if ( !$this->redirectIfNotConnected( true ) ) {
+            $json[ 'connected' ] = false;
+            echo JSONConvertor::JSONToText( $json );
+            die();
+        }
+
+        $data = $this->getData()->data;
+        $opened = htmlspecialchars( $data['opened'] );
+
+        $this->loadModel( 'sondage' );
+        $sondageModel = $this->getModel( 'sondage' );
+        $sondage = $sondageModel->searchOne( array(
+            'conditions' => array(
+                'id' => htmlspecialchars( $id ),
+                'user' => $this->getSession()->get( 'user' )->id
+            )
+        ) );
+        if ( $data == null || $sondage == null ) {
+            if ( $sondage == null ) {
+                $json[ 'message' ] = "Droits insuffisant pour cette opération";
+            }
+            if ( $data == null ) {
+                $json[ 'message' ] = "Aucune donnée n'a été transmise";
+            }
+            echo JSONConvertor::JSONToText( $json );
+            die();
+        }
+
+        $sondageModel->update( array(
+            'id'    => $sondage->id,
+            'opened' => $opened == "true" ? 1 : 0
+        ) );
+
+
+        $json[ 'status' ] = 'success';
+        echo JSONConvertor::JSONToText( $json );
+        die();
+    }
+
     public function save( $id, $slug ) {
         header('Content-type: application/json');
         $json = array();
@@ -159,6 +203,37 @@ class SurveyController extends Controller {
             if ( $data == null ) {
                 $json[ 'message' ] = "Aucune donnée n'a été transmise";
             }
+            echo JSONConvertor::JSONToText( $json );
+            die();
+        }
+
+
+
+        /*
+         * On vérifie si le sondage peut être encore modifié.
+         */
+        $this->loadModel( 'answer' );
+        $answerModel = $this->getModel( 'answer' );
+        $answers = $answerModel->searchOne( array(
+            'conditions' => array(
+                'sondage' => $sondage->id
+            )
+        ) );
+
+        if ( !empty( $answers ) ) {
+            $json[ 'message' ] = "Le sondage ne peut pas être modifié car il"
+                . " contient déjà des réponses.";
+            echo JSONConvertor::JSONToText( $json );
+            die();
+        }
+
+        /*
+         * Si personne n'a encore répondu mais que le sondage est ouvert aux
+         * réponses, alors il est interdit de modifier le sondage.
+         */
+        if ( !$sondage->opened ) {
+            $json[ 'message' ] = "Le sondage ne peut pas être modifié car il"
+                . " est ouvert aux réponses.";
             echo JSONConvertor::JSONToText( $json );
             die();
         }
@@ -253,6 +328,7 @@ class SurveyController extends Controller {
 
     public function respondent($id, $slug) {
         $this->setLayout( 'default' );
+        $this->loadMessageFormatter( 'respondent' );
 
         $this->loadModel( 'sondage' );
         $this->loadModel( 'question' );
@@ -266,22 +342,32 @@ class SurveyController extends Controller {
         if ( empty( $sondage ) ) {
             $this->error404( 'Ce sondage est introuvable.' );
         }
+        $session = self::getSession();
+        if ( !$sondage->opened ) {
+            $session->setBag(
+                "Ce sondage n'est plus ouvert aux réponses", 'stats_error'
+            );
+        }
 
-        $questionModel = $this->getModel( 'question' );
-        $questions = $questionModel->search( array(
-            'conditions' => array(
-                'sondage' => $id
-            ),
-            'order' => array(
-                'by' => 'orderNum',
-                'dir' => 'asc'
-            )
-        ) );
+        $questions = array();
+        if ( $sondage->opened ) {
+            $questionModel = $this->getModel( 'question' );
+            $questions = $questionModel->search( array(
+                'conditions' => array(
+                    'sondage' => $id
+                ),
+                'order' => array(
+                    'by' => 'orderNum',
+                    'dir' => 'asc'
+                )
+            ) );
+        }
 
         $this->sendVariables( array(
             'sondageId' => $sondage->id,
             'sondageTitle' => $sondage->title,
             'sondageSlug' => $sondage->slug,
+            'sondageOpened' => $sondage->opened,
             'questions' => $questions
         ) );
     }
@@ -289,6 +375,7 @@ class SurveyController extends Controller {
     public function getSurvey($id, $slug) {
         $this->loadModel( 'sondage' );
         $this->loadModel( 'question' );
+
         $sondageModel = $this->getModel( 'sondage' );
 
         $sondage = $sondageModel->searchOne( array(
@@ -296,6 +383,10 @@ class SurveyController extends Controller {
                 'id' => $id
             )
         ) );
+        if ( !$sondage->opened ) {
+            $this->redirect( "survey/respondent/$id/$slug" );
+            die();
+        }
         if ( empty( $sondage ) ) {
             $this->error404( 'Ce sondage est introuvable.' );
         }

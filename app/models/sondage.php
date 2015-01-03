@@ -26,11 +26,17 @@ class Sondage extends Model {
         }
     }
 
-    public function getSondages( $userId ) {
+    public function getSondages( $userId, $conditions = array() ) {
+        $c = array(
+            'user' => $userId
+        );
+        if ( !empty( $conditions ) ) {
+            foreach($conditions as $k => $v) {
+                $c[ $k ] = $v;
+            }
+        }
         return $this->search( array(
-            'conditions' => array(
-                'user' => $userId
-            ),
+            'conditions' => $c,
             'order' => array(
                 'by' => 'date',
                 'dir' => 'desc'

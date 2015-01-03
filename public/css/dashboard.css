@@ -85,7 +85,7 @@ body {
     border: dashed 2px #D35400;
 }
 
-#manage_preloader {
+.manage_preloader {
     visibility: hidden;
 }
 

@@ -38,6 +38,9 @@
     "dashboard/ajax/questions/:slug-:id":
         "survey/getQuestions/id:[0-9]+/slug:[a-zA-Z \\-]+",
 
+    "dashboard/ajax/survey/activate/:id":
+        "survey/activate/id:[0-9]+",
+
     "stats/:slug-:id":
         "survey/stats/id:[0-9]+/slug:[a-zA-Z \\-]+"
 }

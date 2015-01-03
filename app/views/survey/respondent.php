@@ -1,5 +1,6 @@
 <?php
 namespace octopus\app\views\survey;
+use octopus\core\Controller;
 use octopus\core\Router;
 
 function questionNumericView( $data ) {
@@ -89,11 +90,13 @@ function questionChoiceView( $data ) {
                         <img src="<?= Router::generate( 'img/icons/svg/mail.svg' );?>" alt="Welcome to Mail App">
                         <h4><?= $appname?><small>Sondage anonyme</small></h4>
                         <img id="manage_preloader" src="<?= Router::generate('img/preloader/barloader.gif') ?>" alt=""/>
-                        <input type="submit" id="btnSave" class="btn btn-warning btn-lg btn-block" value="Envoyer">
+                        <?php if ( $sondageOpened ): ?>
+                            <input type="submit" id="btnSave" class="btn btn-warning btn-lg btn-block" value="Envoyer">
+                        <?php endif; ?>
                     </div>
 
                     <p class="lead"><?= $sondageTitle; ?></p>
-
+                    <?=Controller::getSession()->bag()?>
                     <div id="questions" class="container-fluid manage">
                         <?php foreach( $questions as $q ){
                             switch( $q->type ) {

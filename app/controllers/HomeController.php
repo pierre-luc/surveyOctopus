@@ -20,7 +20,9 @@ class HomeController extends Controller {
         $sondageModel = $this->getModel( 'sondage' );
         $sondages = array();
         foreach ( $users as $user ) {
-            $sondages[] = $sondageModel->getSondages( $user->id );
+            $sondages[] = $sondageModel->getSondages( $user->id, array(
+                'opened' => 1
+            ) );
         }
         $this->sendVariables( 'sondages', $sondages );
     }

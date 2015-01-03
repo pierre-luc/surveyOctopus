@@ -146,9 +146,11 @@ var manageSurvey = {
                       res.tokens[ i ].token
                     );
                 }
-            } else {
-
+            } else if (res.status == 'failure' ) {
+                $('#alert .modal-body').html(res.message);
+                $('#alert').modal('show');
             }
+
         }, "json");
 
     },

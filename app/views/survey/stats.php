@@ -1,5 +1,6 @@
 <?php
 namespace octopus\app\views\survey;
+use octopus\core\Controller;
 use octopus\core\Router;
 use octopus\core\utils\JSONConvertor;
 
@@ -160,7 +161,6 @@ function questionChoiceView( $data, $sondageTitle ) {
             </div>
 
             <p class="lead"><?= $sondageTitle; ?></p>
-
             <div id="questions" class="container-fluid manage">
 
                 <?php foreach( $questionsStats as $q ){
