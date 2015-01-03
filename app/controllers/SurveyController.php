@@ -323,4 +323,86 @@ class SurveyController extends Controller {
         $this->redirect( '' );
         die();
     }
+
+    public function stats($id, $slug) {
+        $this->redirectIfNotConnected();
+        $this->setLayout( 'dashboard' );
+
+        $this->loadModel( 'sondage' );
+        $this->loadModel( 'question' );
+        $sondageModel = $this->getModel( 'sondage' );
+
+        $sondage = $sondageModel->searchOne( array(
+            'conditions' => array(
+                'id' => $id
+            )
+        ) );
+        if ( empty( $sondage ) ) {
+            $this->error404( 'Ce sondage est introuvable.' );
+        }
+
+        $questionModel = $this->getModel( 'question' );
+        $questions = $questionModel->search( array(
+            'conditions' => array(
+                'sondage' => $id
+            ),
+            'order' => array(
+                'by' => 'orderNum',
+                'dir' => 'asc'
+            )
+        ) );
+
+        $this->loadModel( 'answer' );
+        $answersModel = $this->getModel( 'answer' );
+        $answers = $answersModel->search( array(
+            'conditions' => array(
+                'sondage' => $id
+            )
+        ) );
+
+        $questionsStats = array();
+        foreach ($questions as $q ) {
+            $criteres = explode(';', $q->criteres);
+            $stats = array();
+            foreach($criteres as $c) {
+                $stats[$c] = 0;
+            }
+            $questionsStats[] = array(
+                'question' => $q,
+                'stats' => array(
+                    'total' =>0,
+                    'votes' => $stats
+                )
+            );
+        }
+
+        foreach ($answers as $a ) {
+            $rep = explode(';', $a->value);
+            foreach($rep as $k => $r) {
+                switch ($questionsStats[ $k ][ 'question' ]->type) {
+                    case 'choice':
+                        $criteres = explode( ';',
+                            $questionsStats[ $k ][ 'question' ]->criteres
+                        );
+                        $name = $criteres[ $r ];
+                    break;
+                    case 'numeric':
+                        $name = $r;
+                    break;
+                    default:
+                        // rien à faire
+                }
+                $questionsStats[ $k ]['stats']['votes'][$name]++;
+                $questionsStats[ $k ]['stats']['total']++;
+            }
+        }
+
+
+        $this->sendVariables( array(
+            'sondageId' => $sondage->id,
+            'sondageTitle' => $sondage->title,
+            'sondageSlug' => $sondage->slug,
+            'questionsStats' => $questionsStats
+        ) );
+    }
 }
