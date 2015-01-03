@@ -76,7 +76,11 @@ var manageSurvey = {
                                 q.setToken( res.questions[ i ].token );
                                 q.setOrder( res.questions[ i ].orderNum );
                                 q.setText( res.questions[ i ].text );
-                                q.setAnswers( res.questions[ i ].criteres );
+                                var answers = res.questions[ i ].criteres;
+                                for ( var k in answers ) {
+                                    answers[ k ] = parseInt( answers[ k ] );
+                                }
+                                q.setAnswers( answers );
                                 q.render();
                                 break;
                             default:
@@ -403,6 +407,11 @@ manageSurvey.question.questionNumeric.prototype.render = function() {
     var num = this.index;
     var answers = this.answers ? this.answers.join(',') : '';
     var text = this.questionText ? this.questionText : '';
+    var min = "", max = "";
+    if ( typeof (this.answers) === 'object' && this.answers.length == 2 ) {
+        min = this.answers[0];
+        max = this.answers[1];
+    }
     var html = '<div id="question_' + num + '" class="row question dragdrop" data-order="' + this.order + '"><div class="login-form">'
         + '<div class="container-fluid">'
         +   '<div class="row">'
@@ -419,10 +428,10 @@ manageSurvey.question.questionNumeric.prototype.render = function() {
         +               '<input maxlength="80" name="question_' + num + '" type="text" class="form-control login-field" value="' + text + '" placeholder="Texte de la question" id="questionText_' + num + '">'
         +               '<p>Interval:</p>'
         +               '<div class="form-group has-error">'
-        +                 '<input type="text" class="form-control min" placeholder="Min">'
+        +                 '<input type="text" class="form-control min" placeholder="Min" value="' + min + '">'
         +               '</div>'
         +               '<div class="form-group has-error">'
-        +                   '<input type="text" class="form-control max" placeholder="Max">'
+        +                   '<input type="text" class="form-control max" placeholder="Max" value="' + max + '">'
         +               '</div>'
         +           '</div>'
         +       '</div>'
@@ -462,6 +471,8 @@ manageSurvey.question.questionNumeric.prototype.render = function() {
         }
         $(manageSurvey).trigger( 'changed' );
     };
+    // première initialisation. (pour les données du serveur)
+    foo( self );
 
     $( '#question_' + num + ' .min').keyup(function(){
         foo( self );
