@@ -109,7 +109,7 @@ class Model {
      *
      * @return mixed
      */
-    public function search( $request ) {
+    public function search( $request = array() ) {
         return $this->dbm->select( $request );
     }
 
