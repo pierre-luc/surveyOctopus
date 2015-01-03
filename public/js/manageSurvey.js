@@ -25,6 +25,17 @@ var manageSurvey = {
             $('#btnSave').addClass('disabled');
         });
 
+
+        $(manageSurvey).on('checkNumberQuestions', function(){
+            if ( manageSurvey.question.list.length == 21 ) {
+                $( '#btnChoiceQuestion' ).addClass( 'disabled' );
+                $( '#btnNumValueQuestion' ).addClass( 'disabled' );
+            } else {
+                $( '#btnChoiceQuestion' ).removeClass( 'disabled' );
+                $( '#btnNumValueQuestion' ).removeClass( 'disabled' );
+            }
+        });
+
         $('#title').keyup(function(){
             manageSurvey.title = $( '#title' ).val();
             $(manageSurvey).trigger( 'changed' );
@@ -38,13 +49,17 @@ var manageSurvey = {
             manageSurvey.save();
         });
 
+
+
         $( '#btnChoiceQuestion').click( function() {
             var q = new manageSurvey.question.questionChoice();
+            $(manageSurvey).trigger('checkNumberQuestions');
             q.render();
         } );
 
         $( '#btnNumValueQuestion').click( function() {
             var q = new manageSurvey.question.questionNumeric();
+            $(manageSurvey).trigger('checkNumberQuestions');
             q.render();
         } );
 
@@ -216,6 +231,7 @@ manageSurvey.question.questionChoice.prototype.delete = function() {
   this.deleted = true;
   $( '#question_' + this.index ).off( 'changeOrder' );
   $( '#question_' + this.index ).remove();
+  $(manageSurvey).trigger('checkNumberQuestions');
 };
 
 manageSurvey.question.questionChoice.prototype.getId = function() {
@@ -350,6 +366,7 @@ manageSurvey.question.questionNumeric.prototype.delete = function() {
   this.deleted = true;
   $( '#question_' + this.index ).off( 'changeOrder' );
   $( '#question_' + this.index ).remove();
+  $(manageSurvey).trigger('checkNumberQuestions');
 };
 
 manageSurvey.question.questionNumeric.prototype.getId = function() {
@@ -362,7 +379,7 @@ manageSurvey.question.questionNumeric.prototype.setId = function( id ) {
 
 manageSurvey.question.questionNumeric.prototype.setAnswers = function( answers ) {
     this.answers = answers;
-}
+};
 
 manageSurvey.question.questionNumeric.prototype.getToken = function() {
     return this.token;
@@ -408,7 +425,8 @@ manageSurvey.question.questionNumeric.prototype.render = function() {
     var answers = this.answers ? this.answers.join(',') : '';
     var text = this.questionText ? this.questionText : '';
     var min = "", max = "";
-    if ( typeof (this.answers) === 'object' && this.answers.length == 2 ) {
+    if ( this.answers && typeof (this.answers) === 'object'
+            && this.answers.length == 2 ) {
         min = this.answers[0];
         max = this.answers[1];
     }
