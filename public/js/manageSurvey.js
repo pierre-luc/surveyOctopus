@@ -71,6 +71,14 @@ var manageSurvey = {
                                 q.setAnswers( res.questions[ i ].criteres );
                                 q.render();
                             break;
+                            case 'numeric':
+                                var q = new manageSurvey.question.questionNumeric();
+                                q.setToken( res.questions[ i ].token );
+                                q.setOrder( res.questions[ i ].orderNum );
+                                q.setText( res.questions[ i ].text );
+                                q.setAnswers( res.questions[ i ].criteres );
+                                q.render();
+                                break;
                             default:
                                 // rien à faire
                         }
