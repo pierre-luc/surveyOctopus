@@ -19,6 +19,8 @@ class InstallController extends Controller {
                 'dbname'   => $conf[ 'database' ]
             ) );
         }
+        // correction bug de connexion automatique
+        $this->getSession()->destroy();
     }
 
     public function database() {
