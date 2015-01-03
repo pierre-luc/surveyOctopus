@@ -20,7 +20,7 @@ function questionNumericView( $data ) {
                         </div>
                         <div class="row">
                             <div class="form-group has-error">
-                                <input type="text" class="form-control min" placeholder="La valeur doit être comprise entre <?= $interval;?>">
+                                <input name="<?=$data->token;?>>" type="text" class="form-control input-interval" placeholder="La valeur doit être comprise entre <?= $interval;?>" required checked data-min="<?=$min;?>" data-max="<?=$max;?>">
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@ function questionChoiceView( $data ) {
                             <div class="form-group has-error">
                                 <?php foreach( $answers as $k => $a ):?>
                                 <label class="radio" for="radio<?=$k;?>">
-                                    <input type="radio" name="optionsRadios" data-toggle="radio" value="" id="radio<?=$k;?>" required checked>
+                                    <input type="radio" name="<?=$data->token;?>" data-toggle="radio" value="<?=$k;?>" id="radio<?=$k;?>" required checked>
                                     <?=$a;?>
                                 </label>
                                 <?php endforeach; ?>
@@ -82,34 +82,36 @@ function questionChoiceView( $data ) {
         </div>
     </div>
     <div class="row">
-        <div class="login">
-            <div class="login-screen">
-                <div class="login-icon" style="position: fixed; top: 120px;">
-                    <img src="<?= Router::generate( 'img/icons/svg/mail.svg' );?>" alt="Welcome to Mail App">
-                    <h4><?= $appname?><small>Sondage anonyme</small></h4>
-                    <img id="manage_preloader" src="<?= Router::generate('img/preloader/barloader.gif') ?>" alt=""/>
-                    <button id="btnSave" class="btn btn-warning btn-lg btn-block disabled">Envoyer</button>
+        <form action="<?=Router::generate( "survey/getSurvey/$sondageId/$sondageSlug" );?>" method="post">
+            <div class="login">
+                <div class="login-screen">
+                    <div class="login-icon" style="position: fixed; top: 120px;">
+                        <img src="<?= Router::generate( 'img/icons/svg/mail.svg' );?>" alt="Welcome to Mail App">
+                        <h4><?= $appname?><small>Sondage anonyme</small></h4>
+                        <img id="manage_preloader" src="<?= Router::generate('img/preloader/barloader.gif') ?>" alt=""/>
+                        <input type="submit" id="btnSave" class="btn btn-warning btn-lg btn-block" value="Envoyer">
+                    </div>
+
+                    <p class="lead"><?= $sondageTitle; ?></p>
+
+                    <div id="questions" class="container-fluid manage">
+                        <?php foreach( $questions as $q ){
+                            switch( $q->type ) {
+                                case 'choice':
+                                    questionChoiceView( $q );
+                                break;
+                                case 'numeric':
+                                    questionNumericView( $q );
+                                break;
+                                default:
+                                    // rien à faire
+                            }
+                        }?>
+                    </div>
+
                 </div>
-
-                <p class="lead"><?= $sondageTitle; ?></p>
-
-                <div id="questions" class="container-fluid manage">
-                    <?php foreach( $questions as $q ){
-                        switch( $q->type ) {
-                            case 'choice':
-                                questionChoiceView( $q );
-                            break;
-                            case 'numeric':
-                                questionNumericView( $q );
-                            break;
-                            default:
-                                // rien à faire
-                        }
-                    }?>
-                </div>
-
             </div>
-        </div>
+        </form>
 
     </div>
 
@@ -117,5 +119,19 @@ function questionChoiceView( $data ) {
 <script>
     $(document).ready(function(){
         $(':radio').radiocheck('uncheck');
+        $('.input-interval').each(function(){
+            $(this).keyup(function(){
+                var min = $(this).attr( 'data-min' );
+                var max = $(this).attr( 'data-max' );
+                var val = parseInt( $(this).val() );
+                if ( min <= val && val <= max ) {
+                    $(this).parent().removeClass( 'has-error' );
+                    $(this).parent().addClass( 'has-success' );
+                } else {
+                    $(this).parent().addClass( 'has-error' );
+                    $(this).parent().removeClass( 'has-success' );
+                }
+            });
+        });
     });
 </script>

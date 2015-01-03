@@ -279,8 +279,48 @@ class SurveyController extends Controller {
         ) );
 
         $this->sendVariables( array(
+            'sondageId' => $sondage->id,
             'sondageTitle' => $sondage->title,
+            'sondageSlug' => $sondage->slug,
             'questions' => $questions
         ) );
+    }
+
+    public function getSurvey($id, $slug) {
+        $this->loadModel( 'sondage' );
+        $this->loadModel( 'question' );
+        $sondageModel = $this->getModel( 'sondage' );
+
+        $sondage = $sondageModel->searchOne( array(
+            'conditions' => array(
+                'id' => $id
+            )
+        ) );
+        if ( empty( $sondage ) ) {
+            $this->error404( 'Ce sondage est introuvable.' );
+        }
+        $this->loadModel( 'answer' );
+        $answersModel = $this->getModel( 'answer' );
+        $data = $this->getData();
+        $r = "";
+        foreach ($data as $key => $value) {
+            $r .= htmlspecialchars($value) . ";";
+        }
+        $r = substr($r, 0, strlen($r) - 1 );
+
+        try {
+            $answersModel->create( array(
+                'value' => $r,
+                'sondage' => $id
+            ) );
+        } catch (\PDOException $e) {
+            Debug::debug($e);
+        }
+        $session = self::getSession();
+        $session->setBag(
+            'Votre réponse a bien été envoyée', 'home_disconnect'
+        );
+        $this->redirect( '' );
+        die();
     }
 }
