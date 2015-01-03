@@ -15,3 +15,40 @@ body {
 .login .login-icon {
     top: 0;
 }
+
+.survey-grid .cell {
+    background-color: #16A085;
+    margin: 5px;
+    color: #fff;
+    -webkit-border-radius: 6px;
+       -moz-border-radius: 6px;
+            border-radius: 6px;
+}
+    .survey-grid .cell:hover {
+        background-color: #27AE60;
+    }
+
+
+.login-form.alone {
+    margin-bottom: 10px;
+    padding: 24px 23px 2px;
+}
+
+
+.manage .question {
+    margin-bottom: 10px;
+}
+
+.manage .question .login-form {
+    cursor: default;
+}
+
+.manage p {
+    margin: 1px 0 1px;
+    color:#2C3E50;
+}
+
+#manage_preloader {
+    visibility: hidden;
+}
+

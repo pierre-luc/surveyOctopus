@@ -1,5 +1,5 @@
 <?php
-namespace octopus\app\views\user;
+namespace octopus\app\views\survey;
 use octopus\core\Router;
 ?>
 

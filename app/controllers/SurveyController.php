@@ -250,4 +250,37 @@ class SurveyController extends Controller {
         echo JSONConvertor::JSONToText( $json );
         die();
     }
+
+    public function respondent($id, $slug) {
+        $this->setLayout( 'default' );
+
+        $this->loadModel( 'sondage' );
+        $this->loadModel( 'question' );
+        $sondageModel = $this->getModel( 'sondage' );
+
+        $sondage = $sondageModel->searchOne( array(
+            'conditions' => array(
+                'id' => $id
+            )
+        ) );
+        if ( empty( $sondage ) ) {
+            $this->error404( 'Ce sondage est introuvable.' );
+        }
+
+        $questionModel = $this->getModel( 'question' );
+        $questions = $questionModel->search( array(
+            'conditions' => array(
+                'sondage' => $id
+            ),
+            'order' => array(
+                'by' => 'orderNum',
+                'dir' => 'asc'
+            )
+        ) );
+
+        $this->sendVariables( array(
+            'sondageTitle' => $sondage->title,
+            'questions' => $questions
+        ) );
+    }
 }

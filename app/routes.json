@@ -2,6 +2,9 @@
     "/":
         "home/index",
 
+    ":slug-:id":
+        "survey/respondent/id:[0-9]+/slug:[a-zA-Z \\-]+",
+
     "inscription":
         "user/signup",
 

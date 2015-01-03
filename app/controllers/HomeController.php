@@ -11,5 +11,17 @@ class HomeController extends Controller {
             $this->redirect( 'dashboard' );
         }
         $this->loadMessageFormatter( 'home' );
+
+
+        $this->loadModel( 'sondage' );
+        $this->loadModel( 'user' );
+        $userModel = $this->getModel( 'user' );
+        $users = $userModel->search();
+        $sondageModel = $this->getModel( 'sondage' );
+        $sondages = array();
+        foreach ( $users as $user ) {
+            $sondages[] = $sondageModel->getSondages( $user->id );
+        }
+        $this->sendVariables( 'sondages', $sondages );
     }
 }

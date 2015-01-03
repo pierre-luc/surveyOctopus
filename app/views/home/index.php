@@ -32,4 +32,20 @@ use octopus\core\Router;
             <p>Survey octopus est une plateforme de sondage.</p>
         </div>
     </div>
+    <div class="row survey-grid">
+        <div class="col-md-offset-1">
+            <div class="container-fluid">
+                <?php foreach ( $sondages as $sondagesUser):
+                    foreach ( $sondagesUser as $s ):?>
+                        <a href="<?= Router::generate( "survey/respondent/{$s->id}/{$s->slug}" ); ?>">
+                            <div class="col-md-3 cell">
+                                <div><?= $s->title?></div>
+                                <div><?= date( "d M Y H:i:s", $s->date) ?></div>
+                            </div>
+                        </a>
+                    <?php endforeach;
+                endforeach;?>
+            </div>
+        </div>
+    </div>
 </div>
