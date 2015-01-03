@@ -8,7 +8,11 @@ class HomeController extends Controller {
     public function index() {
         $this->loadModel( 'user' );
         if ( User::isConnected() ) {
-            $this->redirect( 'dashboard' );
+            if ( User::isAdmin() ) {
+                $this->redirect( 'admin/index' );
+            } else {
+                $this->redirect( 'dashboard' );
+            }
         }
         $this->loadMessageFormatter( 'home' );
 

@@ -43,4 +43,8 @@ class User extends Model {
     public static function isConnected() {
         return Controller::getSession()->get( 'user' ) != null;
     }
+
+    public static function isAdmin() {
+        return Controller::getSession()->get( 'user' )->role == 'admin';
+    }
 }

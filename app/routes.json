@@ -5,6 +5,9 @@
     ":slug-:id":
         "survey/respondent/id:[0-9]+/slug:[a-zA-Z \\-]+",
 
+    "administration":
+        "admin/index",
+
     "sendSurvey/:slug-:id":
         "survey/getSurvey/id:[0-9]+/slug:[a-zA-Z \\-]+",
 
