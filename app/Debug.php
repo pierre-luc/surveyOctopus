@@ -11,7 +11,7 @@ namespace octopus\app;
  * que peut afficher PDO.
  */
 class Debug {
-    static $debug = 1;
+    static $debug = 0;
     static $pdoDebugMode =
     //*
         \PDO::ERRMODE_EXCEPTION;
