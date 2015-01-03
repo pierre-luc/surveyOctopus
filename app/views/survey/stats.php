@@ -6,7 +6,7 @@ use octopus\core\utils\JSONConvertor;
 ?>
 <script src="<?=Router::root('js/canvasjs.min.js');?>"></script>
 <script>
-    jQuery.fn.renderChart = function( datas ){
+    jQuery.fn.renderPie = function( datas, exportName ){
         var id = $(this).selector;
 
         var chart = new CanvasJS.Chart(id,
@@ -14,7 +14,7 @@ use octopus\core\utils\JSONConvertor;
                 title:{
                     text: ""
                 },
-                exportFileName: "Pie Chart",
+                exportFileName: exportName,
                 exportEnabled: true,
                 legend:{
                     verticalAlign: "bottom",
@@ -32,10 +32,30 @@ use octopus\core\utils\JSONConvertor;
             });
         chart.render();
     };
+    jQuery.fn.renderHist = function( datas, exportName ){
+        var id = $(this).selector;
+
+        var chart = new CanvasJS.Chart(id,
+            {
+                title:{
+                    text: ""
+                },
+                exportFileName: exportName,
+                exportEnabled: true,
+                data: [
+
+                    {
+                        dataPoints: datas
+                    }
+                ]
+            });
+
+        chart.render();
+    };
 </script>
 <?php
 
-function questionNumericView( $data ) {
+function questionNumericView( $data, $sondageTitle ) {
     $stats = $data['stats'];
     $data = $data['question'];
     $values = explode(';', $data->criteres);
@@ -55,7 +75,30 @@ function questionNumericView( $data ) {
                         </div>
                         <div class="row">
                             <div class="form-group has-error">
-                                <input name="<?=$data->token;?>>" type="text" class="form-control input-interval" placeholder="La valeur doit être comprise entre <?= $interval;?>" required checked data-min="<?=$min;?>" data-max="<?=$max;?>">
+                                <div class="row">
+                                    <div id="chart<?=$data->orderNum;?>" class="chart" style="height: 300px; width: 100%;"></div>
+                                    <script>
+                                        <?php
+                                            $dataJSON = array();
+                                            $delta = ($max - $min) / 10;
+                                            for ($i = $min; $i < $max; $i += $delta ) {
+                                                $somme = 0;
+                                                foreach($stats['votes'] as $k => $v) {
+                                                    if ( $i <= $k && $k <= $i + $delta ) {
+                                                        $somme += $v;
+                                                    }
+                                                }
+                                                $dataJSON[] = array(
+                                                    "x" => $i,
+                                                    "y" => $somme,
+                                                    "label" => "$i"
+                                                );
+                                            }
+
+                                        ?>
+                                        $("chart<?=$data->orderNum;?>").renderHist(<?=JSONConvertor::JSONToText($dataJSON);?>, "<?="$sondageTitle - Q{$data->orderNum} {$data->text}";?>");
+                                    </script>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -65,7 +108,7 @@ function questionNumericView( $data ) {
     </div>
 <?php }
 
-function questionChoiceView( $data ) {
+function questionChoiceView( $data, $sondageTitle ) {
     $stats = $data['stats'];
     $data = $data['question'];
     $answers = explode(';', $data->criteres);
@@ -92,13 +135,13 @@ function questionChoiceView( $data ) {
                                     $dataJSON = array();
                                     foreach( $stats['votes'] as $k => $a ){
                                         $dataJSON[] = array(
-                                            "y" => $a * 100 / $stats['total'],
+                                            "y" => number_format($a * 100 / $stats['total'], 2),
                                             "legendText" => $k,
                                             "label" => $k
                                         );
                                     }
                                 ?>
-                                $("chart<?=$data->orderNum;?>").renderChart(<?=JSONConvertor::JSONToText($dataJSON);?>);
+                                $("chart<?=$data->orderNum;?>").renderPie(<?=JSONConvertor::JSONToText($dataJSON);?>, "<?="$sondageTitle - Q{$data->orderNum} {$data->text}";?>");
                             </script>
                         </div>
                     </div>
@@ -114,8 +157,6 @@ function questionChoiceView( $data ) {
             <div class="login-icon" style="position: fixed; top: 120px;">
                 <img src="<?= Router::generate( 'img/icons/svg/mail.svg' );?>" alt="Welcome to Mail App">
                 <h4><?= $appname?><small>Statistiques</small></h4>
-                <img id="manage_preloader" src="<?= Router::generate('img/preloader/barloader.gif') ?>" alt=""/>
-                <input type="submit" id="btnSave" class="btn btn-warning btn-lg btn-block" value="Envoyer">
             </div>
 
             <p class="lead"><?= $sondageTitle; ?></p>
@@ -125,10 +166,10 @@ function questionChoiceView( $data ) {
                 <?php foreach( $questionsStats as $q ){
                     switch( $q['question']->type ) {
                         case 'choice':
-                            questionChoiceView( $q );
+                            questionChoiceView( $q, $sondageTitle );
                             break;
                         case 'numeric':
-                            questionNumericView( $q );
+                            questionNumericView( $q, $sondageTitle );
                             break;
                         default:
                             // rien à faire

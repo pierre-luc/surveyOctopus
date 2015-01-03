@@ -88,3 +88,7 @@ body {
 #manage_preloader {
     visibility: hidden;
 }
+
+.canvasjs-chart-toolbar > div > div {
+    color: #000;
+}
