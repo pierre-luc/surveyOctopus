@@ -331,7 +331,6 @@ class DataBaseManager {
      * Retourne true si la requête s'est bien passée, false sinon.
      * @param $sql
      * @param string $dbconf
-     * @return bool
      */
     public static function execute( $sql, $dbconf = 'default' ) {
         // todo Refaire la gestion de la base donnée avec cette classe
@@ -342,9 +341,8 @@ class DataBaseManager {
         $pre = $dnm->db;
         try {
             $pre->exec( $sql );
-            return true;
         } catch ( \PDOException $e ) {
-            return false;
+            throw $e;
         }
     }
 }

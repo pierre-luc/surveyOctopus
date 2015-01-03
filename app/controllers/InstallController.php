@@ -82,15 +82,19 @@ class InstallController extends Controller {
             unset($tSql[sizeof($tSql) - 1]);
 
             foreach ($tSql as $e) {
-                $r = DataBaseManager::execute($e.';');
-                if ( !$r ) {
+                try {
+                    DataBaseManager::execute($e.';');
+                } catch (\PDOException $e) {
                     $json[ 'status' ] = 'failure';
+                    $json['msg'] = $e;
                 }
+
             }
             if ( $json[ 'status' ] == 'success' ) {
                 rename( $file, APP . DS . $dbname . '_installed.sql' );
             }
         } else {
+            $json['msg'] = 'impossible de lire le fichier sql';
             $json[ 'status' ] = 'failure';
         }
         header('Content-type: application/json');

@@ -48,6 +48,7 @@ use octopus\core\Router;
                 );
                 $( '#details').addClass( 'palette palette-nephritis');
             } else {
+                console.log(data);
                 $( '#message' ).html( "Une erreur est survenue durant l'installation." );
                 $( '#message').addClass( 'palette palette-alizarin');
                 $( '.login-screen').append(
