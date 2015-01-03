@@ -41,6 +41,9 @@
     "dashboard/ajax/survey/activate/:id":
         "survey/activate/id:[0-9]+",
 
+    "dashboard/delete/:slug-:id":
+        "survey/remove/id:[0-9]+/slug:[a-zA-Z \\-]+",
+
     "stats/:slug-:id":
         "survey/stats/id:[0-9]+/slug:[a-zA-Z \\-]+"
 }

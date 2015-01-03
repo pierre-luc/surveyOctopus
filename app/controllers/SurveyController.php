@@ -174,6 +174,35 @@ class SurveyController extends Controller {
         die();
     }
 
+    public function remove( $id, $slug ) {
+        $this->redirectIfNotConnected();
+        $this->loadModel( 'sondage' );
+        $sondageModel = $this->getModel( 'sondage' );
+        $sondage = $sondageModel->searchOne( array(
+            'conditions' => array(
+                'id' => htmlspecialchars( $id ),
+                'slug' => htmlspecialchars( $slug ),
+                'user' => $this->getSession()->get( 'user' )->id
+            )
+        ) );
+
+        if ( $sondage == null ) {
+            $this->redirect( 'dashboard' );
+        }
+
+        $this->loadModel( 'question' );
+        $questionModel = $this->getModel( 'question' );
+        $questionModel->removeQuestionWithSurveyId( $sondage->id );
+
+        $this->loadModel( 'answer' );
+        $questionModel = $this->getModel( 'answer' );
+        $questionModel->removeAnswersWithSurveyId( $sondage->id );
+
+        $sondageModel->delete( 'id', $sondage->id );
+        $this->redirect( 'dashboard' );
+        die();
+    }
+
     public function save( $id, $slug ) {
         header('Content-type: application/json');
         $json = array();
@@ -231,7 +260,7 @@ class SurveyController extends Controller {
          * Si personne n'a encore répondu mais que le sondage est ouvert aux
          * réponses, alors il est interdit de modifier le sondage.
          */
-        if ( !$sondage->opened ) {
+        if ( $sondage->opened ) {
             $json[ 'message' ] = "Le sondage ne peut pas être modifié car il"
                 . " est ouvert aux réponses.";
             echo JSONConvertor::JSONToText( $json );
