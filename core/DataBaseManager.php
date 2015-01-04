@@ -138,7 +138,7 @@ class DataBaseManager {
         $sql .= " FROM `" . $this->table . "` as `T" . $this->table . "` ";
 
         // Construction de la condition WHERE
-        if ( isset( $request['conditions'] ) ) {
+        if ( !empty( $request['conditions'] ) ) {
             $sql .= "WHERE ";
             // si la conditions est une chaîne de caractères
             if ( !is_array( $request['conditions'] ) ) {
