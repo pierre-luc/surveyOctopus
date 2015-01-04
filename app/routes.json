@@ -41,6 +41,9 @@
     "dashboard":
         "survey/dashboard",
 
+    "dashboard/page/:page":
+        "survey/dashboard/page:[0-9]+",
+
     "dashboard/createSurvey":
         "survey/add",
 

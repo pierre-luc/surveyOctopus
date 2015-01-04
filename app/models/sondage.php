@@ -26,7 +26,7 @@ class Sondage extends Model {
         }
     }
 
-    public function getSondages( $userId, $conditions = array() ) {
+    public function getSondages( $userId, $conditions = null, $limit = "" ) {
         $c = array(
             'user' => $userId
         );
@@ -35,12 +35,28 @@ class Sondage extends Model {
                 $c[ $k ] = $v;
             }
         }
-        return $this->search( array(
+        $request = array(
             'conditions' => $c,
             'order' => array(
                 'by' => 'date',
                 'dir' => 'desc'
             )
-        ) );
+        );
+        if ( $limit != "" ) {
+            $request[ 'limit' ] = $limit;
+        }
+        return $this->search( $request );
+    }
+
+    public function getSondagesCount( $userId, $conditions = null ) {
+        $c = array(
+            'user' => $userId
+        );
+        if ( !empty( $conditions ) ) {
+            foreach($conditions as $k => $v) {
+                $c[ $k ] = $v;
+            }
+        }
+        return $this->count( $c );
     }
 }

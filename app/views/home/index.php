@@ -38,7 +38,7 @@ use octopus\core\Router;
                 <?php foreach ( $sondages as $sondagesUser):
                     foreach ( $sondagesUser as $s ):?>
                         <a href="<?= Router::generate( "survey/respondent/{$s->id}/{$s->slug}" ); ?>">
-                            <div class="col-md-3 cell">
+                            <div class="col-md-3 col-sm-5  col-xs-12 cell">
                                 <div><?= $s->title?></div>
                                 <div><?= date( "d M Y H:i:s", $s->date) ?></div>
                             </div>

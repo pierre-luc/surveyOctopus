@@ -109,3 +109,10 @@ body {
         margin-bottom: 0;
     }
 }
+
+.pagination li {
+    background: #27AE60;
+}
+    .pagination li>a {
+        border: none !important;
+    }

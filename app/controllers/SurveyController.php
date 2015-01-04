@@ -8,14 +8,41 @@ use octopus\core\Router;
 use octopus\core\utils\JSONConvertor;
 
 class SurveyController extends Controller {
-    public function dashboard() {
+    public function dashboard($page = 1) {
+        $page = intval( htmlspecialchars( $page ) );
         $this->setLayout( 'dashboard' );
         $this->redirectIfNotConnected();
         $user = $this->getSession()->get( 'user' );
         $this->loadModel( 'sondage' );
         $sondageModel = $this->getModel( 'sondage' );
-        $sondages = $sondageModel->getSondages( $user->id );
-        $this->sendVariables( 'sondages', $sondages );
+        $item_per_page = 10;
+        $offset = ( $page - 1 ) * $item_per_page;
+        $sondages = $sondageModel->getSondages(
+            $user->id, null, "$offset,$item_per_page"
+        );
+        $rowcount = $sondageModel->getSondagesCount( $user->id );
+        $count = (int) ceil( $rowcount / $item_per_page );
+
+        $baseUrlPagination = Router::generate( 'dashboard/page' );
+
+        $previousLink = null;
+        if ( $page > 1 ) {
+            $next = $page - 1;
+            $previousLink = "$baseUrlPagination/$next";
+        }
+        $nextLink = null;
+        if ( $page < $count ) {
+            $prev = $page + 1;
+            $nextLink = "$baseUrlPagination/$prev";
+        }
+        $this->sendVariables( array(
+            'sondages' => $sondages,
+            'page' => $page,
+            'countPages' => $count,
+            'previousLink' => $previousLink,
+            'nextLink' => $nextLink,
+            'baseUrlPagination' => $baseUrlPagination
+        ) );
     }
 
     public function add() {

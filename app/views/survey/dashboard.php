@@ -1,6 +1,35 @@
 <?php
 namespace octopus\app\views\survey;
 use octopus\core\Router;
+
+function pagination( $page, $previousLink, $nextLink, $countPages, $baseUrlPagination ) {
+?>
+    <div class="row">
+        <div class="container">
+            <div class="row">
+                <div style="text-align: center;">
+                    <div class="pagination">
+                        <ul>
+                            <li class="previous<?=isset($previousLink)?'':' disabled'?>">
+                                <a href="<?=isset($previousLink)?$previousLink:'#'?>" class="fui-arrow-left"></a>
+                            </li>
+                            <?php for($i = 1; $i <= $countPages; $i++ ):?>
+                                <li<?=$page == $i ? ' class="active"':''?>>
+                                    <a href="<?="$baseUrlPagination/$i"?>"><?=$i?></a>
+                                </li>
+                            <?php endfor;?>
+                            <li class="next<?=isset($nextLink)?'':' disabled'?>">
+                                <a href="<?=isset($nextLink)?$nextLink:'#'?>" class="fui-arrow-right"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php
+}
+
 ?>
 
 <?php if ( $sondages == null ):?>
@@ -10,6 +39,8 @@ use octopus\core\Router;
     </div>
 </div>
 <?php else: ?>
+
+    <?php pagination($page, $previousLink, $nextLink, $countPages, $baseUrlPagination);?>
     <div class="row table">
         <div class="container">
             <div class="row hidden-xs">
@@ -37,6 +68,7 @@ use octopus\core\Router;
             <?php endforeach;?>
         </div>
     </div>
+    <?php pagination($page, $previousLink, $nextLink, $countPages, $baseUrlPagination);?>
     <script>
         $(document).ready(function(){
             $('input[data-toggle="switch"]').each(function(){
