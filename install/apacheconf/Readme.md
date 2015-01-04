@@ -27,7 +27,7 @@ le répertoire
 Le site doit être installé dans ```shell /var/www/surveyOctopus``` pour que ces 
 configurations, telles qu'elles sont, puissent fonctionner.
 
-*default* contient une configuration pour un usage sur un serveur dans le but de
+**default** contient une configuration pour un usage sur un serveur dans le but de
 remplacer la configuration par défaut.	Copiez le fichier de la configuration:
 
 ```shell
