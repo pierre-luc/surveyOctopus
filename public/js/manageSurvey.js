@@ -307,7 +307,7 @@ manageSurvey.question.questionChoice.prototype.render = function() {
         +           '<div class="row">'
         +               '<div class="form-group">'
         +                  '<input maxlength="80" name="question_' + num + '" type="text" class="form-control login-field" value="' + text + '" placeholder="Texte de la question" id="questionText_' + num + '">'
-        +                   '<label class="login-field-icon fui-tag" for="title"></label>'
+        +                   '<label class="login-field-icon fui-tag" for="question_' + num + '"></label>'
         +               '</div>'
         +               '<p>Réponses:</p>'
         +               '<input name="tagsinput" class="tagsinput" data-role="tagsinput" value="' + answers + '" placeholder="Réponse" />'

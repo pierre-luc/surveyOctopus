@@ -53,10 +53,15 @@ class SurveyController extends Controller {
         $user = $this->getSession()->get( 'user' );
         $this->loadModel( 'sondage' );
         $sondageModel = $this->getModel( 'sondage' );
-
-        $sondageModel->add( $user->id, $data->title );
-
-        $this->redirect( 'dashboard' );
+        $title = htmlspecialchars( $data->title );
+        $sondageModel->add( $user->id, $title );
+        $sondage = $sondageModel->searchOne( array(
+            'conditions' => array(
+                'user' => $user->id,
+                'title' => $title
+            )
+        ) );
+        $this->redirect( "survey/manage/{$sondage->id}/{$sondage->slug}" );
     }
 
     public function manage( $id, $slug ) {

@@ -44,6 +44,7 @@ class UserController extends Controller {
                 'Inscription réalisée avec succès',
                 'signup_ok'
             );
+            $this->redirect( 'connexion' );
         } elseif ( $r == 'duplicate' ) {
             $session->setBag(
                 'Le login existe déjà', 'signup_err'
