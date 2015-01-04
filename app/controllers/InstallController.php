@@ -1,5 +1,6 @@
 <?php
 namespace octopus\app\controllers;
+use octopus\app\Debug;
 use octopus\core\Config;
 use octopus\core\Controller;
 use octopus\core\DataBaseManager;
@@ -86,7 +87,9 @@ class InstallController extends Controller {
                     DataBaseManager::execute($e.';');
                 } catch (\PDOException $e) {
                     $json[ 'status' ] = 'failure';
-                    $json['msg'] = $e;
+                    if ( Debug::$debug > 0 ) {
+                        $json['msg'] = $e;
+                    }
                 }
 
             }

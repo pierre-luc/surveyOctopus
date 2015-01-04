@@ -82,7 +82,7 @@ class DataBaseManager {
             if ( Debug::$debug >= 1 ) {
                 die( $e->getMessage() );
             } else {
-                die( "Impossible de se connecter à la base de données." );
+                throw $e;
             }
         }
         return true; // par homogénéité
@@ -337,9 +337,9 @@ class DataBaseManager {
         // en effet l'approche qui suit n'est pas du tout propre.
 
         // provoque plusieurs connexion et instanciation via PDO
-        $dnm = new DataBaseManager( $dbconf, null );
-        $pre = $dnm->db;
         try {
+            $dnm = new DataBaseManager( $dbconf, null );
+            $pre = $dnm->db;
             $pre->exec( $sql );
         } catch ( \PDOException $e ) {
             throw $e;
