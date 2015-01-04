@@ -14,7 +14,12 @@ class User extends Model {
             'pass'  => sha1( $salt . '_' . sha1( htmlspecialchars( $pass ) ) )
         );
         try {
+            $result = $this->search();
+            if ( empty( $result ) ) {
+                $data[ 'role' ] = 'admin';
+            }
             $this->create( $data );
+
             return 'created';
         } catch (\PDOException $e) {
             if ( $e->getCode() == 23000 ) {

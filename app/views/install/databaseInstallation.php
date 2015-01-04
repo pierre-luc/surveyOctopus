@@ -33,11 +33,11 @@ use octopus\core\Router;
                     '<div id="details"></div>'
                 );
                 $( '#details' ).html(
-                    "<p>L'installation est terminée.</p>"
+                    "<p>L'installation est terminée. Le premier compte que vous allez créer sera le compte administrateur.</p>"
 
 
                     + '<div class="row"><div class="col-md-4 col-md-offset-8">'
-                    +         '<a class="btn btn-block btn-lg btn-inverse" href="<?= Router::generate( '' );?>">'
+                    +         '<a class="btn btn-block btn-lg btn-inverse" href="<?= Router::generate( 'user/signup' );?>">'
 
                     +           '<span>Terminer</span>'
                     +           '<span class="fui-arrow-right"></span>'
