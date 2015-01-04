@@ -72,7 +72,7 @@ class Config {
         }
         $dbname = Config::$databases[ 'default' ][ 'database' ];
         return ( file_exists( APP . DS . 'parameters.json' ) &&
-            file_exists( APP . DS . $dbname . '_installed.sql' )
+            file_exists( APP . DS . 'database_installed.sql' )
         );
     }
 }

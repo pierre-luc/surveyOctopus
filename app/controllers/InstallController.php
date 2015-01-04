@@ -66,7 +66,7 @@ class InstallController extends Controller {
         $dbname = Config::$databases[ 'default' ][ 'database' ];
         $json = array();
         $json[ 'status' ] = 'success';
-        $file = APP . DS . $dbname . ".sql";
+        $file = APP . DS . "database.sql";
         if ( file_exists( $file ) ) {
             $f = fopen( $file, "r");
             $sql = "";
@@ -94,7 +94,7 @@ class InstallController extends Controller {
 
             }
             if ( $json[ 'status' ] == 'success' ) {
-                rename( $file, APP . DS . $dbname . '_installed.sql' );
+                rename( $file, APP . DS . 'database_installed.sql' );
             }
         } else {
             $json['msg'] = 'impossible de lire le fichier sql';
