@@ -12,27 +12,27 @@ use octopus\core\Router;
 <?php else: ?>
     <div class="row table">
         <div class="container">
-            <div class="row">
-                <div class="col-md-3">Titre</div>
-                <div class="col-md-2 col-md-offset-4">Ouvert aux réponses</div>
-                <div class="col-md-3">Date de création</div>
+            <div class="row hidden-xs">
+                <div class="col-md-3 col-sm-3">Titre</div>
+                <div class="col-md-2 col-md-offset-4 col-sm-offset-4 col-sm-3">Ouvert aux réponses</div>
+                <div class="col-md-3 col-sm-3">Date de création</div>
             </div>
             <?php foreach( $sondages as $s ):?>
                 <div class="row table-row">
-                    <div class="col-md-3"><?= $s->title?></div>
-                    <div class="col-md-3 action col-md-offset-1">
+                    <div class="col-md-3 col-sm-3"><?= $s->title?></div>
+                    <div class="col-md-3 action col-md-offset-1 col-sm-4">
                         <a href="<?= Router::generate( "survey/stats/{$s->id}/{$s->slug}" )?>" class="btn btn-default navbar-btn btn-xs btn-inverse">Stats</a>
                         <a href="<?= Router::generate( "survey/manage/{$s->id}/{$s->slug}" )?>" class="btn btn-default navbar-btn btn-xs btn-warning">Modifier</a>
                         <a href="<?= Router::generate( "survey/remove/{$s->id}/{$s->slug}" )?>" class="btn btn-default navbar-btn btn-xs btn-danger">Supprimer</a>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-1 col-sm-1">
                         <span id="switch<?=$s->id;?>" class="bootstrap-switch-square">
                             <input type="checkbox" <?= $s->opened ? 'checked' : '' ?> data-toggle="switch" name="square-switch" data-on-text="Oui" data-off-text="Non" data-value="<?=$s->id;?>" data-ajax="<?=Router::generate( "survey/activate/{$s->id}" )?>"/>
                         </span>
                             <img id="manage_preloader<?=$s->id;?>" class="manage_preloader" src="<?= Router::generate('img/preloader/barloader.gif') ?>" alt=""/>
 
                     </div>
-                    <div class="col-md-3 col-md-offset-1"><?= date( "d M Y H:i:s", $s->date) ?></div>
+                    <div class="col-md-3 col-md-offset-1 col-sm-offset-1 col-sm-3"><?= date( "d M Y H:i:s", $s->date) ?></div>
                 </div>
             <?php endforeach;?>
         </div>

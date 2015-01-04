@@ -92,3 +92,20 @@ body {
 .canvasjs-chart-toolbar > div > div {
     color: #000;
 }
+
+
+@media screen and (max-width: 1000px) {
+    .login-screen {
+        padding: 0;
+    }
+
+    .login-icon {
+        display: none;
+    }
+
+    .table .table-row .action * {
+        display: inline-block;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}

@@ -287,6 +287,7 @@ manageSurvey.question.questionChoice.prototype.updateOrder = function() {
     $( '#question_' + this.index ).attr( 'data-order', this.getOrder() );
 };
 
+
 manageSurvey.question.questionChoice.prototype.render = function() {
     var num = this.index;
     var answers = this.answers ? this.answers.join(',') : '';
@@ -296,15 +297,18 @@ manageSurvey.question.questionChoice.prototype.render = function() {
         +   '<div class="row">'
         +       '<div class="container-fluid">'
         +           '<div class="row">'
-        +               '<div class="col-md-11">'
+        +               '<div class="col-md-11 col-sm-11">'
         +                   '<p><b>' + num + ':</b> Question à choix</p>'
         +               '</div>'
-        +               '<div class="col-md-1">'
+        +               '<div class="col-md-1 col-sm-1">'
         +                   '<a href="#" class="remove-btn login-field-icon fui-cross"></a>'
         +               '</div>'
         +           '</div>'
         +           '<div class="row">'
-        +               '<input maxlength="80" name="question_' + num + '" type="text" class="form-control login-field" value="' + text + '" placeholder="Texte de la question" id="questionText_' + num + '">'
+        +               '<div class="form-group">'
+        +                  '<input maxlength="80" name="question_' + num + '" type="text" class="form-control login-field" value="' + text + '" placeholder="Texte de la question" id="questionText_' + num + '">'
+        +                   '<label class="login-field-icon fui-tag" for="title"></label>'
+        +               '</div>'
         +               '<p>Réponses:</p>'
         +               '<input name="tagsinput" class="tagsinput" data-role="tagsinput" value="' + answers + '" placeholder="Réponse" />'
         +           '</div>'
