@@ -16,7 +16,6 @@ class HomeController extends Controller {
         }
         $this->loadMessageFormatter( 'home' );
 
-
         $this->loadModel( 'sondage' );
         $this->loadModel( 'user' );
         $userModel = $this->getModel( 'user' );

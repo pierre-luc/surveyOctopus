@@ -15,8 +15,8 @@ use octopus\core\Router;
     <!-- Loading Flat UI -->
     <link href="<?php echo Router::root( 'css/flat-ui.min.css' );?>" rel="stylesheet">
 
-    <!-- Loading default skin -->
-    <link href="<?php echo Router::root( 'css/default.css' );?>" rel="stylesheet">
+    <!-- Loading dashboard skin -->
+    <link href="<?php echo Router::root( 'css/dashboard.css' );?>" rel="stylesheet">
 
     <link rel="shortcut icon" href="<?php echo Router::root( 'img/favicon.ico' );?>">
 
@@ -28,17 +28,42 @@ use octopus\core\Router;
 
     <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
     <script src="<?php echo Router::root( 'js/vendor/jquery.min.js' );?>"></script>
+    <script src="<?php echo Router::root( 'js/vendor/jquery-ui.min.js' );?>"></script>
+
 </head>
 <body>
 
+<div class="container-fluid">
+    <div class="row">
+        <nav class="navbar navbar-inverse navbar-embossed" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+                <a class="navbar-brand" href="<?= Router::root( '' );?>">Survey Octopus</a>
+            </div>
+            <div class="navbar-collapse collapse in" id="navbar-collapse-01">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="<?= Router::generate( 'admin/users' );?>">Gérer les utilisateurs<span class="navbar-unread">1</span></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="<?= Router::generate( 'admin/surveys' );?>">Gérer les sondages<span class="navbar-unread">1</span></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="<?= Router::generate( 'user/disconnect' );?>">Déconnexion<span class="navbar-unread">1</span></a></li>
+                </ul>
+            </div>
+        </nav><!-- /navbar -->
+    </div>
     <?= $content_for_layout ?>
+</div>
 
-    <!-- /.container -->
+<!-- /.container -->
 
-
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="<?php echo Router::root( 'js/vendor/video.js' );?>"></script>
-    <script src="<?php echo Router::root( 'js/flat-ui.min.js' );?>"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="<?php echo Router::root( 'js/vendor/video.js' );?>"></script>
+<script src="<?php echo Router::root( 'js/flat-ui.min.js' );?>"></script>
+<script src="<?php echo Router::root( 'js/flat-ui.extend.js' );?>"></script>
 
 </body>
 </html>

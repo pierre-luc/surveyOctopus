@@ -8,6 +8,18 @@
     "administration":
         "admin/index",
 
+    "administration/manage/users":
+        "admin/users",
+
+    "administration/manage/surveys":
+        "admin/surveys",
+
+    "administration/remove/user/:id":
+        "admin/removeUser/id:[0-9]+",
+
+    "administration/remove/survey/:id":
+        "admin/removeSurvey/id:[0-9]+",
+
     "sendSurvey/:slug-:id":
         "survey/getSurvey/id:[0-9]+/slug:[a-zA-Z \\-]+",
 

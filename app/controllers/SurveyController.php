@@ -40,6 +40,9 @@ class SurveyController extends Controller {
             } else {
                 $this->redirect( '' );
             }
+        } else if( User::isAdmin() ) {
+            $this->redirect( 'admin/index' );
+            die();
         }
         return true;
     }
