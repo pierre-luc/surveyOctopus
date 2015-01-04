@@ -52,3 +52,17 @@ body {
     visibility: hidden;
 }
 
+
+@media screen and (max-width: 1000px) {
+   .login-screen {
+       padding: 0;
+   }
+
+    .login-icon {
+        display: none;
+    } .bloc {
+        display:block;
+        clear:both;
+    }
+}
+
