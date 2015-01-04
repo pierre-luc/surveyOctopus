@@ -3,9 +3,10 @@ namespace octopus\app\controllers;
 use octopus\app\Debug;
 use octopus\app\models\User;
 use octopus\core\Controller;
+use octopus\core\Router;
 
 class HomeController extends Controller {
-    public function index() {
+    public function index( $page = 1 ) {
         $this->loadModel( 'user' );
         if ( User::isConnected() ) {
             if ( User::isAdmin() ) {
@@ -17,16 +18,40 @@ class HomeController extends Controller {
         $this->loadMessageFormatter( 'home' );
 
         $this->loadModel( 'sondage' );
-        $this->loadModel( 'user' );
-        $userModel = $this->getModel( 'user' );
-        $users = $userModel->search();
+
         $sondageModel = $this->getModel( 'sondage' );
-        $sondages = array();
-        foreach ( $users as $user ) {
-            $sondages[] = $sondageModel->getSondages( $user->id, array(
-                'opened' => 1
-            ) );
+
+        $item_per_page = 18;
+        $offset = ( $page - 1 ) * $item_per_page;
+
+        $sondages = $sondageModel->getSondages(
+            null, array( 'opened' => 1 ), "$offset,$item_per_page"
+        );
+
+        $rowcount = $sondageModel->getSondagesCount(
+            null, array( 'opened' => 1 )
+        );
+        $count = (int) ceil( $rowcount / $item_per_page );
+
+        $baseUrlPagination = Router::generate( 'page' );
+
+        $previousLink = null;
+        if ( $page > 1 ) {
+            $next = $page - 1;
+            $previousLink = "$baseUrlPagination/$next";
         }
-        $this->sendVariables( 'sondages', $sondages );
+        $nextLink = null;
+        if ( $page < $count ) {
+            $prev = $page + 1;
+            $nextLink = "$baseUrlPagination/$prev";
+        }
+        $this->sendVariables( array(
+            'sondages' => $sondages,
+            'page' => $page,
+            'countPages' => $count,
+            'previousLink' => $previousLink,
+            'nextLink' => $nextLink,
+            'baseUrlPagination' => $baseUrlPagination
+        ) );
     }
 }

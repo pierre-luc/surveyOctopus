@@ -5,6 +5,9 @@
     ":slug-:id":
         "survey/respondent/id:[0-9]+/slug:[a-zA-Z \\-]+",
 
+    "page/:id":
+        "home/index/id:[0-9]+",
+
     "administration":
         "admin/index",
 

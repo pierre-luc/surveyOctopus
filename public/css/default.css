@@ -53,6 +53,13 @@ body {
 }
 
 
+.pagination li {
+    background: #27AE60;
+}
+    .pagination li>a {
+        border: none !important;
+    }
+
 @media screen and (max-width: 1000px) {
    .login-screen {
        padding: 0;

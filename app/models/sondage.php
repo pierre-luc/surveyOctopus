@@ -26,32 +26,40 @@ class Sondage extends Model {
         }
     }
 
-    public function getSondages( $userId, $conditions = null, $limit = "" ) {
-        $c = array(
-            'user' => $userId
-        );
+    public function getSondages( $userId = null, $conditions = null, $limit = "" ) {
+        $c = array();
+        if ( $userId != null ) {
+            $c = array(
+                'user' => $userId
+            );
+        }
         if ( !empty( $conditions ) ) {
             foreach($conditions as $k => $v) {
                 $c[ $k ] = $v;
             }
         }
         $request = array(
-            'conditions' => $c,
             'order' => array(
                 'by' => 'date',
                 'dir' => 'desc'
             )
         );
+        if ( !empty( $c ) ) {
+            $request[ 'conditions' ] = $c;
+        }
         if ( $limit != "" ) {
             $request[ 'limit' ] = $limit;
         }
         return $this->search( $request );
     }
 
-    public function getSondagesCount( $userId, $conditions = null ) {
-        $c = array(
-            'user' => $userId
-        );
+    public function getSondagesCount( $userId = null, $conditions = null ) {
+        $c = array();
+        if ( $userId != null ) {
+            $c = array(
+                'user' => $userId
+            );
+        }
         if ( !empty( $conditions ) ) {
             foreach($conditions as $k => $v) {
                 $c[ $k ] = $v;
