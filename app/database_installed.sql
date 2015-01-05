@@ -1,15 +1,5 @@
--- phpMyAdmin SQL Dump
--- version 4.0.10deb1
--- http://www.phpmyadmin.net
---
--- Client: localhost
--- Généré le: Sam 03 Janvier 2015 à 06:45
--- Version du serveur: 5.5.40-0ubuntu0.14.04.1
--- Version de PHP: 5.5.9-1ubuntu4.5
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -19,8 +9,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données: `surveyOctopus_db`
 --
-
--- --------------------------------------------------------
 
 --
 -- Structure de la table `answers`
@@ -88,14 +76,6 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
--- Contraintes pour les tables exportées
---
---
--- Contraintes pour la table `answers`
---
-
-
---
 -- Contraintes pour la table `questions`
 --
 ALTER TABLE `questions`
@@ -106,6 +86,10 @@ ALTER TABLE `questions`
 --
 ALTER TABLE `sondages`
   ADD CONSTRAINT `FKuser` FOREIGN KEY (`user`) REFERENCES `users` (`id`);
+
+--
+-- Contraintes pour la table `answers`
+--
 
 ALTER TABLE `answers`
   ADD CONSTRAINT `FKsondageAnswer` FOREIGN KEY (`sondage`) REFERENCES `sondages` (`id`);
