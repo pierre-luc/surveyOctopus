@@ -89,7 +89,7 @@ class User extends Model {
      * Booleén indiquant si l'utilisateur est un administrateur.
      * @pre
      *  isConnected()
-     * 
+     *
      * @return bool
      */
     public static function isAdmin() {

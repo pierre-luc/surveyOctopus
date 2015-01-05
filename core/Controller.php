@@ -193,6 +193,10 @@ class Controller {
         self::$session = $session;
     }
 
+    /**
+     * Retourne la session du controleur.
+     * @return Session
+     */
     public static function getSession() { return self::$session; }
 
     /**

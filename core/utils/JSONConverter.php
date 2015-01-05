@@ -57,6 +57,15 @@ class JSONConvertor {
         return self::textToJSON( $t );
     }
 
+    /**
+     * Supprime les accents des lettres d'une chaîne de caractères. Et retourne
+     * la chaîne produite.
+     * @param $str
+     *  chaîne à analyser
+     * @param string $charset
+     *  encodage des caractères
+     * @return mixed|string
+     */
     public static function remove_accents($str, $charset='utf-8') {
         $str = htmlentities($str, ENT_NOQUOTES, $charset);
 

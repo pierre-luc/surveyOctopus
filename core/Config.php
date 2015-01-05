@@ -26,7 +26,7 @@ class Config {
         self::loadDatabasesConfig();
     }
 
-    /*
+    /**
      * Initialise la variable de classe $database si elle ne l'est pas déjà.
      * @return bool
      */
