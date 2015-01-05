@@ -9,6 +9,10 @@ class Sondage extends Model {
 
         $slug = strtolower( htmlspecialchars( $title ) );
         $slug = str_replace( ' ', '-', $slug );
+        $slug = str_replace( ',', '-', $slug );
+        $slug = str_replace( ';', '-', $slug );
+        $slug = str_replace( '\'', '-', $slug );
+        $slug = str_replace( '"', '-', $slug );
         $slug = JSONConvertor::remove_accents( $slug );
         $data = array(
             'user'   => htmlspecialchars( $userId ),
