@@ -7,17 +7,7 @@ use octopus\core\utils\JSONConvertor;
 class Sondage extends Model {
     public function add( $userId, $title ) {
 
-        $slug = strtolower( htmlspecialchars( $title ) );
-
-        $chars = array(
-            ' ', ',', ';', '\'', '"', '?', '!',
-            '(', ')', '[', ']', '{', '}', '@',
-        );
-        foreach ($chars as $c) {
-            $slug = str_replace( $c, '-', $slug );
-        }
-
-        $slug = JSONConvertor::remove_accents( $slug );
+       $slug = self::createSlug( $title );
         $data = array(
             'user'   => htmlspecialchars( $userId ),
             'title'  => htmlspecialchars( $title ),
@@ -74,5 +64,20 @@ class Sondage extends Model {
             }
         }
         return $this->count( $c );
+    }
+
+    public static function createSlug( $string ) {
+        $slug = strtolower( htmlspecialchars( $string  ) );
+
+        $chars = array(
+            ' ', ',', ';', '\'', '"', '?', '!',
+            '(', ')', '[', ']', '{', '}', '@',
+        );
+        foreach ($chars as $c) {
+            $slug = str_replace( $c, '-', $slug );
+        }
+
+        $slug = JSONConvertor::remove_accents( $slug );
+        return $slug;
     }
 }

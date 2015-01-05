@@ -302,9 +302,12 @@ class SurveyController extends Controller {
             die();
         }
 
+       $slug = $sondageModel::createSlug( $title );
+
         $sondageModel->update( array(
             'id'    => $sondage->id,
-            'title' => $title
+            'title' => $title,
+            'slug' => $slug
         ) );
 
         $this->loadModel( 'question' );
