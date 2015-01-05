@@ -8,7 +8,13 @@ class Sondage extends Model {
     public function add( $userId, $title ) {
 
         $slug = strtolower( htmlspecialchars( $title ) );
-        $slug = str_replace( ' ', '-', $slug );
+        $chars = array(
+            ' ', ',', ';', '\'', '"', '?', '!',
+            '(', ')', '[', ']', '{', '}', '@',
+        );
+        foreach ($chars as $c) {
+            $slug = str_replace( ' ', '-', $slug );
+        }
         $slug = JSONConvertor::remove_accents( $slug );
         $data = array(
             'user'   => htmlspecialchars( $userId ),
@@ -19,7 +25,7 @@ class Sondage extends Model {
         );
 
         try {
-        $this->create( $data );
+            $this->create( $data );
 
         } catch (\Exception $e) {
             Debug::debug($e);
