@@ -7,11 +7,42 @@ use octopus\core\Controller;
 use octopus\core\Router;
 use octopus\core\utils\JSONConvertor;
 
+/**
+ * Class SurveyController
+ * @package octopus\app\controllers
+ *
+ * Cette classe est le controleur des sondages.
+ * Elle permet de gérer la création, la modification, et la suppression de
+ * sondage.
+ */
 class SurveyController extends Controller {
+    /**
+     * Controleur de la page dashboard.
+     * Cette page dispose d'un système de pagination.
+     *
+     * Si l'utilisateur n'est pas connecté alors il est redirigé vers la page
+     * principale.
+     *
+     * L'action de controleur définit le layout dashboard pour sa vue. Et stocke
+     * les sondages de l'utilisateur. Ces sondages ne sont pas tous récupérés.
+     * Seulement des groupes de 10 sondages sont récupérés. Le numéro de la page
+     * permet de définir quel groupe sera chargé puis renvoyé à la vue.
+     *
+     * @param int $page
+     *  numéro de la page à afficher
+     *
+     * Les variables renvoyées à la vue sont les suivantes:
+     * sondages: tableau contenant les sondages de l'utilisateur du groupe $page
+     * page: numéro de la page courante
+     * countPages: nombre de pages
+     * previousLink: url vers la page précédente, null si page < 2
+     * nextLink: url vers la page suivante, null si page > countPage
+     * baseUrlPagination: base de l'url de pagination
+     */
     public function dashboard($page = 1) {
+        $this->redirectIfNotConnected();
         $page = intval( htmlspecialchars( $page ) );
         $this->setLayout( 'dashboard' );
-        $this->redirectIfNotConnected();
         $user = $this->getSession()->get( 'user' );
         $this->loadModel( 'sondage' );
         $sondageModel = $this->getModel( 'sondage' );
@@ -45,19 +76,25 @@ class SurveyController extends Controller {
         ) );
     }
 
+    /**
+     * Controleur de la vue add.
+     * Définit le layout et vérifie si l'utilisateur à le droit d'accéder au
+     * contenu. Si non, il est redirigé vers la page principale.
+     */
     public function add() {
         $this->setLayout( 'dashboard' );
         $this->redirectIfNotConnected();
     }
 
-    /*
+    /**
      * Redirige l'utilisateur vers la page principale s'il n'est pas connecté.
      * Utilisant le protocole HTTP avec la méthode redirect, si cela est permis.
-     * Retourne un booléen indiquant si l'utilisateur est connecté ou non.
      *
-     * @param String $onlyboolean
+     * @param boolean $onlyboolean
      *  Indique si l'on souhaite seulement récupérer l'état de connexion sans
      * rediriger.
+     * @return boolean
+     *  booléen indiquant si l'utilisateur est connecté ou non.
      */
     private function redirectIfNotConnected( $onlyboolean = false ) {
         $this->loadModel( 'user' );
@@ -74,6 +111,15 @@ class SurveyController extends Controller {
         return true;
     }
 
+    /**
+     * Cette action permet de créer un sondage.
+     * Si l'utilisateur n'est pas connecté, il est redirigé vers la page
+     * principale.
+     *
+     * Les données du formulaire de création de sondage sont récupérées.
+     * Le sondage est ensuite créé puis l'utilisateur est redirigé vers la page
+     * d'édition de ce sondage.
+     */
     public function create() {
         $this->redirectIfNotConnected();
         $data = $this->getData();
@@ -91,6 +137,23 @@ class SurveyController extends Controller {
         $this->redirect( "survey/manage/{$sondage->id}/{$sondage->slug}" );
     }
 
+    /**
+     * Controleur de la page manage.
+     *
+     * Si l'utilisateur n'est pas connecté alors il est redirigé vers la page
+     * principale.
+     *
+     * Définit le layout dahsboard pour sa vue.
+     *
+     * La liste des sondages de l'utilisateur connecté est stockée dans la
+     * variable sondages et accessible depuis la vue.
+     *
+     * @param $id
+     *  id du sondage
+     * @param $slug
+     *  slug du sondage
+     *
+     */
     public function manage( $id, $slug ) {
         $this->redirectIfNotConnected();
         $this->setLayout( 'dashboard' );
@@ -113,6 +176,24 @@ class SurveyController extends Controller {
         ) );
     }
 
+    /**
+     * Cette action permet de retourner la liste des questions d'un sondage et
+     * constitue une requête AJAX.
+     *
+     * Les données renvoyées sont écrite au format JSON.
+     * Les erreurs qui peuvent être déclanchées au cours de cette action sont
+     * transmises dans la réponse de la requête sous forme d'un message clair.
+     *
+     * Une erreur est déclanchée si:
+     *  - l'utilisateur n'est pas connecté
+     *  - l'utilisateur n'a pas les droits sur le sondage
+     *
+     * @param $id
+     *  id du sondage
+     *
+     * @param $slug
+     *  slug du sondage
+     */
     public function getQuestions( $id, $slug ) {
         header('Content-type: application/json');
         $json = array();
@@ -165,6 +246,14 @@ class SurveyController extends Controller {
         die();
     }
 
+    /**
+     * Cette action permet d'ouvrir ou de fermer un sondage aux réponses et
+     * constitue une requête AJAX.
+     *
+     * Les données renvoyées sont écrites au format JSON.
+     * @param $id
+     *  id du sondage
+     */
     public function activate( $id ) {
         header('Content-type: application/json');
         $json = array();
@@ -202,13 +291,28 @@ class SurveyController extends Controller {
             'id'    => $sondage->id,
             'opened' => $opened == "true" ? 1 : 0
         ) );
-
-
         $json[ 'status' ] = 'success';
         echo JSONConvertor::JSONToText( $json );
         die();
     }
 
+    /**
+     * Cette action permet la suppression d'un sondage.
+     *
+     * Si l'utilisateur n'est pas connecté, il est redirigé vers la page de
+     * gestion des sondages.
+     *
+     * La suppression d'un sondage entraine la suppression des questions et
+     * réponses associées.
+     *
+     * Une fois la suppression effectuée l'utilisateur est redirigé vers la page
+     * de gestion des sondages.
+     *
+     * @param $id
+     *  id du sondage
+     * @param $slug
+     *  slug du sondage
+     */
     public function remove( $id, $slug ) {
         $this->redirectIfNotConnected();
         $this->loadModel( 'sondage' );
@@ -238,6 +342,34 @@ class SurveyController extends Controller {
         die();
     }
 
+    /**
+     * Cette action permet de sauvegarder un sondage et constitue une requête
+     * AJAX.
+     *
+     * Plusieurs vérifications sont effectuées avant de procéder à la sauvegarde
+     * su sondage.
+     *
+     * Une erreur est renvoyée à l'utilisateur si:
+     * - il n'est pas connecté
+     * - il n'a pas les droits sur le sondage
+     * - si aucune donnée n'a été transmise
+     * - si des personnes ont déjà répondus aux question du sondage
+     * - si le sondage est ouvert aux réponses
+     *
+     * Une fois les vérifications effectuées. Les données transmises sont
+     * utilisées afin de les sauvegarder.
+     *
+     * La modification du titre entraine la  modification du slug.
+     *
+     * Les questions sont identifiées par leurs token.
+     *
+     * Les token des nouvelles question sont envoyés au client.
+     *
+     * @param $id
+     *  id du sondage
+     * @param $slug
+     *  slug du sondage
+     */
     public function save( $id, $slug ) {
         header('Content-type: application/json');
         $json = array();
@@ -270,8 +402,6 @@ class SurveyController extends Controller {
             echo JSONConvertor::JSONToText( $json );
             die();
         }
-
-
 
         /*
          * On vérifie si le sondage peut être encore modifié.
@@ -393,6 +523,12 @@ class SurveyController extends Controller {
         die();
     }
 
+    /**
+     * Controleur qui gère les réponses aux sondages.
+     *
+     * @param $id
+     * @param $slug
+     */
     public function respondent($id, $slug) {
         $this->setLayout( 'default' );
         $this->loadMessageFormatter( 'respondent' );
@@ -439,6 +575,22 @@ class SurveyController extends Controller {
         ) );
     }
 
+    /**
+     * Action qui permet de récupérer les réponses des sondages des utilisateurs
+     * connectés ou non.
+     *
+     * Si le sondage est introuvable, une erreur 404 est renvoyée.
+     *
+     * Si le sondage n'est pas ouvert aux réponses, une erreur est renvoyée.
+     *
+     * Un message est envoyé à la vue à moyen de bag de \octopus\core\Session
+     * pour informer l'utilisateur que sa réponse à bien été prise en compte.
+     *
+     * @param $id
+     *  id du sondage
+     * @param $slug
+     *  slug du sondage
+     */
     public function getSurvey($id, $slug) {
         $this->loadModel( 'sondage' );
         $this->loadModel( 'question' );
@@ -482,6 +634,30 @@ class SurveyController extends Controller {
         die();
     }
 
+    /**
+     * Controleur de la page stats.
+     * Cette action permet de préparer les données qui seront envoyées à la vue
+     * afin d'afficher les statistiques de réponses du sondage.
+     *
+     * Si l'utilisateur n'est pas connecté alors il est redirigé vers la page
+     * principale.
+     *
+     * Si le sondage est introuvable, une erreur 404 est renvoyée.
+     *
+     * @param $id
+     *  id du sondage
+     * @param $slug
+     *  slug du sondage
+     *
+     * Les variables suivantes sont envoyées à la vue:
+     * sondageId: id du sondage
+     * sondageTitle: titre du sondage
+     * sondageSlug: slug du sondage
+     * questionsStats: tableau contenant la liste des questions ainsi que le
+     *                 nombre de réponses total par question et avec le nombre
+     *                 de réponses pour chacun des choix de réponses du sondage
+     *                 par question.
+     */
     public function stats($id, $slug) {
         $this->redirectIfNotConnected();
         $this->setLayout( 'dashboard' );

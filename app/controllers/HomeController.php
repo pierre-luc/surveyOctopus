@@ -5,7 +5,32 @@ use octopus\app\models\User;
 use octopus\core\Controller;
 use octopus\core\Router;
 
+/**
+ * Class HomeController
+ * @package octopus\app\controllers
+ * Cette classe est le controleur pour la page principale.
+ */
 class HomeController extends Controller {
+
+    /**
+     * Controleur de la page principale.
+     * La principale possède un système de pagination afin d'afficher les
+     * sondages par groupe de 18.
+     *
+     * Cette action redirige vers la page d'administration si l'utilisateur est
+     * l'administrateur. Si non, vers la page de d'administration des sondages
+     * d'un utilisateurs connecté.
+     * @param int $page
+     *  page est le numéro de la page à charger pour la vue
+     *
+     * Les variables renvoyées à la vue sont les suivantes:
+     * sondages: tableau contenant les sondages de l'utilisateur du groupe $page
+     * page: numéro de la page courante
+     * countPages: nombre de pages
+     * previousLink: url vers la page précédente, null si page < 2
+     * nextLink: url vers la page suivante, null si page > countPage
+     * baseUrlPagination: base de l'url de pagination
+     */
     public function index( $page = 1 ) {
         $this->loadModel( 'user' );
         if ( User::isConnected() ) {
@@ -15,6 +40,9 @@ class HomeController extends Controller {
                 $this->redirect( 'dashboard' );
             }
         }
+        /*
+         * utilisé pour bag
+         */
         $this->loadMessageFormatter( 'home' );
 
         $this->loadModel( 'sondage' );

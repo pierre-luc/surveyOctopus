@@ -6,7 +6,24 @@ use octopus\core\Controller;
 use octopus\core\DataBaseManager;
 use octopus\core\utils\JSONConvertor;
 
+/**
+ * Class InstallController
+ * @package octopus\app\controllers
+ *
+ * Cette classe est le controleur du processus d'installation.
+ */
 class InstallController extends Controller {
+
+    /**
+     * Controleur du point d'entrée de l'installateur.
+     *
+     * Tout d'abord cette action prépare la vue en choisissant le layout
+     * installer. Si l'installation a déjà été réalisée alors l'utilisateur est
+     * redirigé vers la page principale.
+     *
+     * Sinon, l'installation peut commencer. Pour cela les détails de connexion
+     * sont chargés s'ils existent afin de pouvoir les afficher dans la vue.
+     */
     public function index() {
         $this->setLayout( 'installer' );
         if ( Config::checkIfAlreadyInstalled() ) {
@@ -24,6 +41,16 @@ class InstallController extends Controller {
         $this->getSession()->destroy();
     }
 
+    /**
+     * Cette action vérifie tout d'abord si l'installation a été effectuée. Dans
+     * un tel cas l'utilisateur est redirigé vers la page principale. Sinon, les
+     * données du formulaire son récupérées afin de procéder à la sauvegarde du
+     * fichier de configuration parameters.json dans le répertoire app.
+     *
+     * Une fois le fichier de configuration créé, l'utilisateur est redirigé
+     * vers l'étape suivante de l'installation. C'est à dire, la création du
+     * schéma de la base de données sur le serveur de base de données.
+     */
     public function database() {
         if ( Config::checkIfAlreadyInstalled() ) {
             Controller::redirect( '' );
@@ -52,6 +79,12 @@ class InstallController extends Controller {
         Controller::redirect( 'install/databaseInstallation' );
     }
 
+    /**
+     * Controleur de la page databaseInstallation du processus d'intallation.
+     * Mis à part le fait que la vérification d'une installation antérieure
+     * existe déjà, dans quel cas l'utilisateur est redirigé vers la page
+     * principale, ce contrôleur définit le layout de la vue et rien de plus.
+     */
     public function databaseInstallation() {
         $this->setLayout( 'installer' );
         if ( Config::checkIfAlreadyInstalled() ) {
@@ -59,6 +92,20 @@ class InstallController extends Controller {
         }
     }
 
+    /**
+     * Cette action est le processus de création du schéma de la base de données
+     * sur le serveur de base de données. Elle consitue une requête AJAX.
+     *
+     * Si l'installation a déjà été effectuée, l'utilisateur est redirigé vers
+     * la page principale.
+     *
+     * Le fichier database.sql du répertoire app contient les directives de
+     * création du schéma de de la base de données. Ce fichier est chargé et
+     * exécuté grâce à la classe \octopus\core\DataBaseManager
+     *
+     * L'issue de cette action est retournée au format JSON dans le but d'être
+     * traitée par un script javascript utilisant la technologie AJAX.
+     */
     public function databaseInstallationProcess() {
         if ( Config::checkIfAlreadyInstalled() ) {
             Controller::redirect( '' );
