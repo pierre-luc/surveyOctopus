@@ -13,7 +13,7 @@ class Sondage extends Model {
             '(', ')', '[', ']', '{', '}', '@',
         );
         foreach ($chars as $c) {
-            $slug = str_replace( ' ', '-', $slug );
+            $slug = str_replace( $c, '-', $slug );
         }
         $slug = JSONConvertor::remove_accents( $slug );
         $data = array(
